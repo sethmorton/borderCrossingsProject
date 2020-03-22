@@ -54,7 +54,7 @@ html {
 
 /* First image (Logo. Full height) */
 .bgimg {
-  background-image: url("https://lh3.googleusercontent.com/proxy/D-xaZnmKpg2G39LlHhufiwmPs1jWPPPTQK_vzJvF1RGIUMjcH4RtEmP1ZlM-nEErjZH9isFMHg6t9A8Ecc77yu1s0szC2HQcaHSQjNev5gcPilnRrxvNdj7W1Bw");
+  background-image: url("https://media.istockphoto.com/photos/mexico-border-picture-id504657149");
   min-height: 100%;
 }
 

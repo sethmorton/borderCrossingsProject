@@ -1,7 +1,6 @@
 <template>
   <div class="expand">
     <div class="bgimg w3-display-container w3-animate-opacity ">
-
       <!-- <div class="w3-display-middle">
         <h1 class="w3-jumbo w3-animate-top">
           <span style="color: #F49278">{{ totalNumber }}</span> <span style="color: #FBFAEF">a</span>
@@ -17,248 +16,178 @@
         <button v-on:click="isHidden = !isHidden">Options</button>
       </div> -->
       <div class="centerTop">
-        <a @click="scrollMeTo('app')"><button v-on:click="isHidden = !isHidden" class="btn fourth">
-          OPTIONS
-        </button></a>
-      </div>
-      <div class="leftBottom">
-        <h1 class="w3-xxlarge w3-animate-top" style="color: #FBFAEF">
+        <!--  -->
+        <h1 class="w3-xxlarge w3-animate-top" style="color: brown ">
           Total border crossings in
-          <span style="color: #F49278">{{ selectedArea }}</span> from
-          <span style="color: #F49278">{{ selectedStartYear }}</span> to
-          <span style="color: #F49278">{{ selectedEndYear }}</span>
+          <span style="color: black">{{ selectedArea }}</span> from
+          <span style="color: black">{{ startYearMonth }} </span>
+
+          <span style="color: black">{{ selectedStartYear }}</span> to
+          <span style="color: black">{{ endYearMonth }} </span>
+          <span style="color: black">{{ selectedEndYear }}:</span>
         </h1>
       </div>
+      <div class="leftBottom">
+        <div>
+          <b-button class="btn fourth" v-b-modal.modal-scrollable
+            >Options</b-button
+          >
+
+          <b-modal
+            id="modal-scrollable"
+            size="sm"
+            scrollable
+            title="Options: Query Options"
+            description="query options"
+          >
+            <div class="w3-display-container grid-container ">
+              <div class="grid-item-startmonth">
+                <div style="text-align: left" class="select">
+                  <select name="slct" v-model="selectedStartMonth" id="slct">
+                    <option selected disabled>Start Month</option>
+                    <option
+                      v-for="choice in dataNonDynamicMonth"
+                      :key="choice"
+                      :value="choice"
+                      >{{ choice }}</option
+                    >
+                  </select>
+                </div>
+
+                <div style="text-align: left; padding-top: 10px" class="select">
+                  <select name="slct" v-model="selectedStartYear" id="slct">
+                    <option selected disabled>Start Year</option>
+                    <option
+                      v-for="choice in dynamicYear"
+                      :key="choice"
+                      :value="choice"
+                      >{{ choice }}</option
+                    >
+                  </select>
+                </div>
+              </div>
+              <!-- <div class="grid-item-startyear">
+                <div class="select">
+                  <select name="slct" id="slct">
+                    <option selected disabled>Choose an option</option>
+                    <option value="1">Pure CSS</option>
+                    <option value="2">No JS</option>
+                    <option value="3">Nice!</option>
+                  </select>
+                </div>
+              </div> -->
+              <div class="grid-item-starttime">
+                <h2 style="text-align: left; ">Start Time</h2>
+              </div>
+              <div class="grid-item-endmonth">
+                <div style="text-align: left" class="select">
+                  <select name="slct" v-model="selectedEndMonth" id="slct">
+                    <option selected disabled>End Month</option>
+                    <option
+                      v-for="choice in dataNonDynamicMonth"
+                      :key="choice"
+                      :value="choice"
+                      >{{ choice }}</option
+                    >
+                  </select>
+                </div>
+
+                <div style="text-align: left; padding-top: 10px" class="select">
+                  <select name="slct" v-model="selectedEndYear" id="slct">
+                    <option selected disabled>Ennd Year</option>
+                    <option
+                      v-for="choice in dynamicYear"
+                      :key="choice"
+                      :value="choice"
+                      >{{ choice }}</option
+                    >
+                  </select>
+                </div>
+              </div>
+              <!-- <div class="grid-item-startyear">
+                <div class="select">
+                  <select name="slct" id="slct">
+                    <option selected disabled>Choose an option</option>
+                    <option value="1">Pure CSS</option>
+                    <option value="2">No JS</option>
+                    <option value="3">Nice!</option>
+                  </select>
+                </div>
+              </div> -->
+              <div class="grid-item-endtime">
+                <h2 style="text-align: left padding-bottom: 10px;">End Time</h2>
+              </div>
+              <div class="ports-grid">
+                <h2 style="text-align: left">Ports</h2>
+                <div class="" :key="choice" v-for="choice in optionsForPorts">
+                  <label class="checkbox-label">
+                    <input
+                      class=""
+                      type="checkbox"
+                      checked=""
+                      v-bind:id="choice"
+                      v-bind:value="choice"
+                      v-model="selectedOptionsForPorts"
+                    />
+
+                    {{ choice }}</label
+                  ><br />
+                </div>
+                <!-- <label class="checkbox-label"><input type="checkbox" value="115">-middle</label><br>
+                <label class="checkbox-label"><input type="checkbox" value="115">-ldlafjaldfjsllsdfj</label><br>
+                <label class="checkbox-label"><input type="checkbox" value="115">-middle</label><br>
+                <label class="checkbox-label"><input type="checkbox" value="115">lsknslknsldfknsldfksfasegsgagssg</label> -->
+              </div>
+              <div class="measures-grid">
+                <h2 style="text-align: left">Measure</h2>
+                <div class="" :key="choice" v-for="choice in optionsForMeasure">
+                  <label class="checkbox-label">
+                    <input
+                      class=""
+                      type="checkbox"
+                      checked=""
+                      v-bind:id="choice"
+                      v-bind:value="choice"
+                      v-model="selectedOptionsForMeasure"
+                    />
+
+                    {{ choice }}</label
+                  ><br />
+                </div>
+              </div>
+              <div class="selected-area-grid">
+                <h2>Area</h2>
+                <div class="" :key="choice" v-for="choice in optionsForArea">
+                  <label class="checkbox-label">
+                    <input
+                      class=""
+                      type="radio"
+                      checked=""
+                      v-bind:id="choice"
+                      v-bind:value="choice"
+                      v-model="selectedArea"
+                    />
+
+                    {{ choice }}</label
+                  ><br />
+                </div>
+              </div>
+            </div>
+          </b-modal>
+        </div>
+      </div>
       <div class="w3-display-middle">
-        <h1 class="w3-jumbo w3-animate-top w3-center" style="color: #F49278">
+        <h1 class="w3-jumbo w3-animate-top w3-center" style="color: black">
           {{ totalNumber }}
         </h1>
         <hr class="w3-border-grey" style="margin:auto;width:40%" />
-        <h1 style="color: #FBFAEF" class="w3-large w3-center">
+        <h1 style="color: brown; font-size: 1.5rem;" class=" w3-center">
           A
-          <span style="color: #F49278"> {{ percentChangeForDom }}%</span> change
+          <span style="color: black"> {{ percentChangeForDom }}%</span> change
           from border crossings between
-          <span style="color: #F49278">{{ previousYearOrNot }}</span>
+          <span ref="app" style="color: black">{{ previousYearOrNot }}</span>
         </h1>
       </div>
-    </div>
-    <div
-      v-if="!isHidden"
-      class="w3-content w3-container w3-padding-64"
-      style="background-color: orange"
-    >
-      <div class="justifyLeft w3-left" ref="app">
-        <h1 style="color: white" class="w3-padding-12">START YEAR</h1>
-        <div class="select">
-          <select name="slct" v-model="selectedStartYear" id="slct">
-            <option selected disabled>Choose an option</option>
-            <option
-              v-for="choice in dynamicYear"
-              :key="choice"
-              :value="choice"
-              >{{ choice }}</option
-            >
-          </select>
-        </div>
-        <h1 style="color: white" class="w3-padding-12">START MONTH</h1>
-        <div class="select">
-          <select name="slct" v-model="selectedStartMonth" id="slct">
-            <option selected disabled>Choose an option</option>
-            <option
-              v-for="choice in dataNonDynamicMonth"
-              :key="choice"
-              :value="choice"
-              >{{ choice }}</option
-            >
-          </select>
-        </div>
-      </div>
-      <div class="justifyRight w3-right">
-        <h1 style="color: white" class="w3-padding-12">END YEAR</h1>
-        <div class="select">
-          <select name="slct" v-model="selectedEndYear" id="slct">
-            <option selected disabled>Choose an option</option>
-            <option
-              v-for="choice in dynamicYear"
-              :key="choice"
-              :value="choice"
-              >{{ choice }}</option
-            >
-          </select>
-        </div>
-        <h1 style="color: white" class="w3-padding-12">END MONTH</h1>
-        <div class="select">
-          <select name="slct" v-model="selectedEndMonth" id="slct">
-            <option selected disabled>Choose an option</option>
-            <option
-              v-for="choice in dataNonDynamicMonth"
-              :key="choice"
-              :value="choice"
-              >{{ choice }}</option
-            >
-          </select>
-        </div>
-
-        <!-- <div class="" :key="choice" v-for="choice in optionsForMeasure">
-          <input
-            class="w3-check"
-            type="checkbox"
-            v-bind:id="choice"
-            v-bind:value="choice"
-            v-model="selectedOptionsForMeasure"
-          />
-          <label class="">{{ choice }}</label>
-        </div> -->
-        <!-- <label class="container"
-          >One
-          <input type="radio" checked="checked" name="radio" />
-          <span class="checkmark"></span>
-        </label>
-        <label class="container"
-          >Two
-          <input type="radio" name="radio" />
-          <span class="checkmark"></span>
-        </label>
-        <label class="container"
-          >Three
-          <input type="radio" name="radio" />
-          <span class="checkmark"></span>
-        </label>
-        <label class="container"
-          >Four
-          <input type="radio" name="radio" />
-          <span class="checkmark"></span>
-        </label> -->
-      </div>
-      <br><br>
-      <div class="w3-center w3-padding-24">
-        <h1 style="color: white" class="w3-padding-12">SELECTED AREA</h1>
-        <div class="w3-center" :key="choice" v-for="choice in optionsForArea">
-          <input
-            class="w3-radio"
-            type="radio"
-            v-bind:id="choice"
-            v-bind:value="choice"
-            v-model="selectedArea"
-          />
-          <label class="">{{ choice }}</label>
-        </div>
-      </div>
-      <div class="w3-left w3-padding-24">
-        <h1 style="color: white" class="w3-padding-12">PORT</h1>
-        <div class="" :key="choice" v-for="choice in optionsForPorts">
-          <input
-            class="w3-check"
-            type="checkbox"
-            checked=""
-            v-bind:id="choice"
-            v-bind:value="choice"
-            v-model="selectedOptionsForPorts"
-          />
-
-          <label>{{ choice }}</label>
-        </div>
-      </div>
-      <div class="w3-right w3-padding-24">
-        <h1 style="color: white" class="w3-padding-12">MEASURE</h1>
-        <div class="" :key="choice" v-for="choice in optionsForMeasure">
-          <input
-            class="w3-check"
-            type="checkbox"
-            checked=""
-            v-bind:id="choice"
-            v-bind:value="choice"
-            v-model="selectedOptionsForMeasure"
-          />
-
-          <label>{{ choice }}</label>
-        </div>
-      </div>
-      <!--
-      <div class="w3-content w3-container w3-padding-64" id="about">
-        <h3 class="w3-center">OPTIONS</h3>
-        <h2>select start year</h2>
-        <select v-model="selectedStartYear">
-           inline object literal
-          <option
-            v-for="choice in dynamicYear"
-            :key="choice"
-            :value="choice"
-            >{{ choice }}</option
-          >
-        </select>
-        <h2>select start month</h2>
-        <select v-model="selectedStartMonth">
-
-          <option
-            v-for="choice in dataNonDynamicMonth"
-            :key="choice"
-            :value="choice"
-            >{{ choice }}</option
-          >
-        </select>
-        <h2>select end year</h2>
-        <select v-model="selectedEndYear">
-
-          <option
-            v-for="choice in dynamicYear"
-            :key="choice"
-            :value="choice"
-            >{{ choice }}</option
-          >
-        </select>
-        <h2>select end month</h2>
-        <select v-model="selectedEndMonth">
-
-          <option
-            v-for="choice in dataNonDynamicMonth"
-            :key="choice"
-            :value="choice"
-            >{{ choice }}</option
-          >
-        </select>
-        <div class="w3-left w3-container w3-card-4">
-          <h2>Area</h2>
-          <div class="" :key="choice" v-for="choice in optionsForArea">
-            <input
-              class="w3-radio"
-              type="radio"
-              v-bind:id="choice"
-              v-bind:value="choice"
-              v-model="selectedArea"
-            />
-            <label class="">{{ choice }}</label>
-          </div>
-        </div>
-        <div class="w3-left w3-container w3-card-4">
-          <h2>Ports</h2>
-          <div class="" :key="choice" v-for="choice in optionsForPorts">
-            <input
-              class="w3-check"
-              type="checkbox"
-              v-bind:id="choice"
-              v-bind:value="choice"
-              v-model="selectedOptionsForPorts"
-            />
-            <label class="">{{ choice }}</label>
-          </div>
-        </div>
-        <div class="w3-right w3-container w3-card-4">
-          <h2>Measure</h2>
-          <div class="" :key="choice" v-for="choice in optionsForMeasure">
-            <input
-              class="w3-check"
-              type="checkbox"
-              v-bind:id="choice"
-              v-bind:value="choice"
-              v-model="selectedOptionsForMeasure"
-            />
-            <label class="">{{ choice }}</label>
-          </div>
-        </div>
-
-        </div>
-       -->
     </div>
   </div>
 </template>
@@ -291,31 +220,7 @@ export default {
       dateForPageStart: "",
       dateForPageEnd: "",
       percentChangeForDom: "",
-      dynamicYear: [
-        // "2017",
-        // "2018",
-        // "2016",
-        // "2015",
-        // "2014",
-        // "2013",
-        // "2012",
-        // "2011",
-        // "2010",
-        // "2009",
-        // "2008",
-        // "2007",
-        // "2006",
-        // "2005",
-        // "2004",
-        // "2003",
-        // "2002",
-        // "2001",
-        // "2000",
-        // "1999",
-        // "1998",
-        // "1997",
-        // "1996"
-      ],
+      dynamicYear: [],
       dataNonDynamicMonth: [
         "12",
         "11",
@@ -329,17 +234,19 @@ export default {
         "03",
         "01"
       ],
-      selectedStartYear: "2019",
-      selectedStartMonth: "11",
+      selectedStartYear: "2018",
+      selectedStartMonth: "12",
       selectedEndYear: "2019",
-      selectedEndMonth: "11",
+      selectedEndMonth: "12",
       unpipedTime: [],
-      previousYearOrNot: ""
+      previousYearOrNot: "",
+      startYearMonth: "",
+      endYearMonth: ""
     };
   },
   methods: {
     setGetCheckBoxes: function(data) {
-      console.log("it has been run");
+      // console.log("it has been run");
       var containerPort = [];
       var containerMeasure = [];
       var containerTime = [];
@@ -366,10 +273,10 @@ export default {
       var filterOutput1 = data.filter(function(item) {
         return selectedOptionsForPorts.includes(item.port_name);
       });
-      console.log(filterOutput1);
+      // console.log(filterOutput1);
       // //console.log(filterOutput1);
       var selectedOptionsForMeasure = this.selectedOptionsForMeasure;
-      console.log(selectedOptionsForMeasure);
+      // console.log(selectedOptionsForMeasure);
       var unpipedTime = filterOutput1.filter(function(item) {
         return selectedOptionsForMeasure.includes(item.measure);
       });
@@ -379,11 +286,11 @@ export default {
       this.getTimeDates(this.unpipedTime);
     },
     getTimeDates: function(unpipedTime) {
-      console.log(unpipedTime);
+      // console.log(unpipedTime);
       this.selectedEndSelect =
         this.selectedEndYear + "-" + this.selectedEndMonth + "-01T00:00:00.000";
 
-      console.log(this.selectedEndSelect);
+      // console.log(this.selectedEndSelect);
       //console.log("loooser");
       var endDate = this.selectedEndSelect;
       //console.log(endDate);
@@ -417,7 +324,7 @@ export default {
       }
       var numberFy = containerValue.map(Number);
       const reducer = (accumulator, currentValue) => accumulator + currentValue;
-      console.log(numberFy);
+      // console.log(numberFy);
       var totalValue = numberFy.reduce(reducer);
       //console.log(totalValue);
       totalValue.toLocaleString();
@@ -426,7 +333,7 @@ export default {
       var hello = this.formatNumber(totalValue);
       //console.log(hello);
       containerValue.length = 0;
-      console.log(numberFy);
+      // console.log(numberFy);
 
       this.totalNumber = hello;
 
@@ -525,9 +432,44 @@ export default {
       selectedStartYear,
       selectedStartMonth
     ) {
+      // console.log(selectedStartMonth);
+
       var startYearWithoutSplice = Number(selectedStartYear) - 1;
-      console.log(startYearWithoutSplice);
-      console.log(selectedEndMonth);
+
+      var month_name = function(dt) {
+        var mlist = [
+          "Jan.",
+          "Feb.",
+          "Mar.",
+          "Apr.",
+          "May",
+          "Jun.",
+          "Jul.",
+          "Aug.",
+          "Sep.",
+          "Oct.",
+          "Nov.",
+          "Dec."
+        ];
+        return mlist[dt.getMonth()];
+      };
+      // // console.log(
+      //    month_name(new Date(selectedStartMonth + "/01/" + selectedStartYear))
+      //  );
+      this.startYearMonth = month_name(
+        new Date(selectedStartMonth + "/01/" + selectedStartYear)
+      );
+      // console.log(selectedEndMonth + "/01/" + selectedEndYear);
+      this.endYearMonth = month_name(
+        new Date(selectedEndMonth + "/01/" + selectedEndYear)
+      );
+      var startDate = new Date(selectedStartMonth + "/01/" + selectedStartYear);
+      var endDate = new Date(selectedEndMonth + "/01/" + selectedEndYear);
+      if (startDate > endDate) {
+        alert(
+          "Please ensure that the End Date is greater than or equal to the Start Date."
+        );
+      }
       // //console.log(
       //   "https://data.transportation.gov/resource/keg4-3bc2.json?$limit=100000&$where=date between '" +
       //     startYearWithoutSplice +
@@ -539,36 +481,22 @@ export default {
       //     selectedEndMonth +
       //     "-01'"
       // );
-      console.log(
-        "https://data.transportation.gov/resource/keg4-3bc2.json?$limit=100000&$where=date between '" +
-          //  startYearWithoutSplice +
-          2019 +
-          "-" +
-          //  selectedStartMonth +
-          11 +
-          "-01' and '" +
-          //  selectedEndYear +
-          2019 +
-          "-" +
-          // selectedEndMonth +
-          11 +
-          "-01'"
-      );
-      console.log(
-        "https://data.transportation.gov/resource/keg4-3bc2.json?$limit=100000&$where=date between '" +
-          startYearWithoutSplice +
-          // 2019 +
-          "-" +
-          selectedStartMonth +
-          // 11 +
-          "-01' and '" +
-          selectedEndYear +
-          // 2019 +
-          "-" +
-          selectedEndMonth +
-          // 11 +
-          "-01'"
-      );
+
+      // // console.log(
+      //    "https://data.transportation.gov/resource/keg4-3bc2.json?$limit=100000&$where=date between '" +
+      //      startYearWithoutSplice +
+      //      // 2019 +
+      //      "-" +
+      //      selectedStartMonth +
+      //      // 11 +
+      //      "-01' and '" +
+      //      selectedEndYear +
+      //      // 2019 +
+      //      "-" +
+      //      selectedEndMonth +
+      //      // 11 +
+      //      "-01'"
+      //  );
       axios
         .get(
           "https://data.transportation.gov/resource/keg4-3bc2.json?$limit=100000&$where=date between '" +
@@ -589,7 +517,7 @@ export default {
         .then(response => {
           var reaction = response.data;
 
-          console.log(response.data);
+          // console.log(response.data);
           var defaultData = reaction.filter(function(item) {
             return "US-Mexico Border".includes(item.border);
           });
@@ -618,11 +546,11 @@ export default {
         });
     },
     scrollMeTo(refName) {
-  var element = this.$refs[refName];
-  var top = element.offsetTop;
+      var element = this.$refs[refName];
+      var top = element.offsetTop;
 
-  window.scrollTo(0, top);
-}
+      window.scrollTo(0, top);
+    }
   },
   watch: {
     selectedArea: function() {
@@ -679,10 +607,10 @@ export default {
       );
     },
     selectedStartMonth: function() {
-      console.log(this.selectedEndYear);
-      console.log(this.selectedEndMonth);
-      console.log(this.selectedStartYear);
-      console.log(this.selectedStartMonth);
+      // console.log(this.selectedEndYear);
+      // console.log(this.selectedEndMonth);
+      // console.log(this.selectedStartYear);
+      // console.log(this.selectedStartMonth);
 
       this.getDataAxios(
         this.selectedEndYear,
@@ -694,7 +622,7 @@ export default {
 
     selectedOptionsForMeasure: function() {
       if (this.selectedArea == ["California"]) {
-        console.log(this.selectedOptionsForMeasure);
+        // console.log(this.selectedOptionsForMeasure);
         this.pipeData(this.californiaData);
       }
       if (this.selectedArea == ["USA-Mexico"]) {
@@ -724,6 +652,7 @@ export default {
             })
           )
         );
+        // console.log(blabla);
         var defaultData = reactione.filter(function(item) {
           return "US-Mexico Border".includes(item.border);
         });
@@ -745,22 +674,26 @@ export default {
         // //  // // //console.log(caliData);
         this.californiaData = caliData;
 
-        //console.log(blabla);
+        // console.log(blabla);
+        // console.log(blabla.getMonth() + 1);
         var selectedEndYear = blabla.getFullYear();
+        var selectedEndMonth = blabla.getMonth() + 1;
+
+        var selectedStartYear = blabla.getFullYear() - 1;
         var data = [];
         for (var i = selectedEndYear; i >= 1996; i--) {
           // var dynamicData = this.dataNonDymanicYear
           data.push(i);
         }
         this.dynamicYear = data;
-        console.log(caliData);
-        var selectedEndMonth = blabla.getMonth();
+        // console.log(caliData);
+
         this.setGetCheckBoxes(caliData);
         this.getDataAxios(
           selectedEndYear,
           selectedEndMonth,
-          this.selectedStartYear,
-          this.selectedStartMonth
+          selectedStartYear,
+          selectedEndMonth
         );
       });
   }
@@ -776,209 +709,50 @@ ul {
   list-style-type: none;
   padding: 0;
 }
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
+
 h1 {
   margin: 0 0 0.25em;
 }
 
-/* Reset Select */
-select {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  -ms-appearance: none;
-  appearance: none;
-  outline: 0;
-  box-shadow: none;
-  border: 0 !important;
-  background: #2c3e50;
-  background-image: none;
-}
-/* Remove IE arrow */
-select::-ms-expand {
-  display: none;
-}
-/* Custom Select */
-.select {
-  position: relative;
-  display: flex;
-  width: 20em;
-  height: 3em;
-  line-height: 3;
-  background: #2c3e50;
-  overflow: hidden;
-  border-radius: 0.25em;
-}
-select {
-  flex: 1;
-  padding: 0 0.5em;
-  color: #fff;
-  cursor: pointer;
-}
-/* Arrow */
-.select::after {
-  content: "\25BC";
-  position: absolute;
-  top: 0;
-  right: 0;
-  padding: 0 1em;
-  background: #34495e;
-  cursor: pointer;
-  pointer-events: none;
-  -webkit-transition: 0.25s all ease;
-  -o-transition: 0.25s all ease;
-  transition: 0.25s all ease;
-}
-/* Transition */
-.select:hover::after {
-  color: #f39c12;
-}
-
-/* .hello {
-  margin: 0;
-  position: relative;
-
-  -ms-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-  background-color: white;
-  opacity: 0.5;
-  width: 100%;
-  height: 200px;
+h2 {
   display: inline-block;
-  text-align: center;
-
+  white-space: nowrap;
 }
-.mainText{
-  margin: 0;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  -ms-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-
+body,
+h1 {
+  font-family: "Raleway", sans-serif;
+  color: gray;
 }
-*/
-
-.centered {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-
-  /* bring your own prefixes */
-  transform: translate(-50%, -50%);
-  background-color: white;
-  opacity: 0.5;
-  display: flex;
-  align-items: center;
-  justify-content: ;
-}
-.centered-bottom {
-  position: fixed;
-  top: 75%;
-  left: 50%;
-
-  /* bring your own prefixes */
-  transform: translate(-50%, -50%);
-  background-color: white;
-  opacity: 0.5;
-  display: flex;
-  align-items: left;
-  justify-content: left;
-}
-.responsive-font-size {
-  font-size: 3vw;
-}
-.optionsPart {
-  width: 100%;
-  background-color: pink;
+body,
+html {
   height: 100%;
-  opacity: 0.6;
-  transform: translate(-50%, -50%);
-  position: fixed;
-  top: 50%;
-  left: 50%;
-
-  /* bring your own prefixes */
 }
+.bgimg {
+  background-image: url("../assets/tijuanariver.jpg");
+  min-height: 100%;
+  background-position: center;
+  background-size: cover;
+}
+.bgimg1 {
+  background-image: url("https://image.freepik.com/foto-gratis/textura-viejo-fondo-papel-anaranjado-primer-estructura-carton-denso_113767-2088.jpg");
+  min-height: 100%;
+  background-position: center;
+  background-size: cover;
+}
+
 .leftBottom {
   transform: translate(-25%, -25%);
   position: absolute;
-  top: 75%;
+  top: 70%;
   left: 25%;
 }
 .centerTop {
   transform: translate(-50%, -50%);
   position: absolute;
-  top: 25%;
+  top: 20%;
   left: 50%;
- }
-/*
-.container {
-  display: block;
-  position: relative;
-  padding-left: 35px;
-  margin-bottom: 12px;
-  cursor: pointer;
-  font-size: 22px;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
 }
 
-/* Hide the browser's default radio button
-.container input {
-  position: absolute;
-  opacity: 0;
-  cursor: pointer;
-}
-
-/* Create a custom radio button
-.checkmark {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 25px;
-  width: 25px;
-  background-color: #2c3e50;
-  border-radius: 50%;
-}
-
-/* On mouse-over, add a grey background color
-.container:hover input ~ .checkmark {
-  background-color: #2c3e50;
-}
-
-/* When the radio button is checked, add a blue background
-.container input:checked ~ .checkmark {
-  background-color: #7EC9D7;
-}
-
-/* Create the indicator (the dot/circle - hidden when not checked)
-.checkmark:after {
-  content: "";
-  position: absolute;
-  display: none;
-}
-/* Show the indicator (dot/circle) when checked
-.container input:checked ~ .checkmark:after {
-  display: block;
-}
-
-/* Style the indicator (dot/circle)
-.container .checkmark:after {
-  top: 9px;
-  left: 9px;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #7EC9D7;
-} */
 .fourth {
   border-color: #f49278;
   color: #fff;
@@ -1002,9 +776,9 @@ select {
   -moz-appearance: none;
   appearance: none;
   background-color: transparent;
-  border: 2px solid #7ec9d7;
+  border: 2px solid white;
   border-radius: 0.6em;
-  color: #7ec9d7;
+  color: white;
   cursor: pointer;
   display: -webkit-box;
   display: flex;
@@ -1037,116 +811,143 @@ select {
   justify-content: right;
   align-items: right;
 }
-/* The container */
-.container {
-  display: block;
+.grid-container {
+  display: grid;
+  grid-column-gap: 15px;
+  grid-template-rows: repeat(4, 100px);
+  grid-template-columns: repeat(3, 1fr);
+  background-color: #fff;
+  padding: 10px;
+}
+
+.grid-item-startmonth {
+  grid-row-start: 2;
+  grid-row-end: 3;
+  grid-column-start: 2;
+  grid-column-end: 3;
+}
+.grid-item-startyear {
+  grid-row-start: 3;
+  grid-row-end: 4;
+  grid-column-start: 2;
+  grid-column-end: 3;
+  text-align: center;
+  padding-top: 30px;
+}
+.grid-item-starttime {
+  grid-row-start: 1;
+  grid-row-end: 2;
+  grid-column-start: 2;
+  grid-column-end: 3;
+  text-align: center;
+  padding-top: 50px;
+}
+.grid-item-endmonth {
+  grid-row-start: 3;
+  grid-row-end: 4;
+  grid-column-start: 2;
+  grid-column-end: 3;
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+.grid-item-endyear {
+  grid-row-start: 5;
+  grid-row-end: 6;
+  grid-column-start: 2;
+  grid-column-end: 3;
+  text-align: center;
+  padding-top: 30px;
+}
+.grid-item-endtime {
+  grid-row-start: 3;
+  grid-row-end: 3;
+  grid-column-start: 2;
+  grid-column-end: 3;
+  padding-bottom: 30px;
+}
+.ports-grid {
+  grid-row-start: 7;
+  grid-row-end: 10;
+  grid-column-start: 2;
+  grid-column-end: 3;
+  padding-bottom: 30px;
+}
+.measures-grid {
+  grid-row-start: 10;
+  grid-row-end: 14;
+  grid-column-start: 2;
+  grid-column-end: 3;
+}
+label.checkbox-label input[type="checkbox"] {
   position: relative;
-  padding-left: 35px;
-  margin-bottom: 12px;
-  cursor: pointer;
-  font-size: 22px;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+  vertical-align: middle;
+  bottom: 1px;
+  padding-top: 10px;
+}
+label {
+  color: gray;
+}
+.selected-area-grid {
+  grid-row-start: 4;
+  grid-row-end: 6;
+  grid-column-start: 2;
+  grid-column-end: 3;
+  padding-top: 60px;
+  padding-bottom: 30px;
+} /*
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -ms-appearance: none;
+  appearance: none;
+  outline: 0;
+  box-shadow: none;
+  border: 0 !important;
+  background: #2c3e50;
+  background-image: none;
 }
 
-/* Hide the browser's default checkbox */
-.container input {
-  position: absolute;
-  opacity: 0;
-  cursor: pointer;
-  height: 0;
-  width: 0;
-}
-
-/* Create a custom checkbox */
-.checkmark {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 25px;
-  width: 25px;
-  background-color: #eee;
-}
-
-/* On mouse-over, add a grey background color */
-.container:hover input ~ .checkmark {
-  background-color: #ccc;
-}
-
-/* When the checkbox is checked, add a blue background */
-.container input:checked ~ .checkmark {
-  background-color: #2196F3;
-}
-
-/* Create the checkmark/indicator (hidden when not checked) */
-.checkmark:after {
-  content: "";
-  position: absolute;
+select::-ms-expand {
   display: none;
 }
 
-/* Show the checkmark when checked */
-.container input:checked ~ .checkmark:after {
-  display: block;
+.select {
+  position: relative;
+  display: flex;
+  width: 20em;
+  height: 3em;
+  line-height: 3;
+  background: #2c3e50;
+  overflow: hidden;
+  border-radius: .25em;
+}
+select {
+  flex: 1;
+  padding: 0 .5em;
+  color: #fff;
+  cursor: pointer;
 }
 
-/* Style the checkmark/indicator */
-.container .checkmark:after {
-  left: 9px;
-  top: 5px;
-  width: 5px;
-  height: 10px;
-  border: solid white;
-  border-width: 0 3px 3px 0;
-  -webkit-transform: rotate(45deg);
-  -ms-transform: rotate(45deg);
-  transform: rotate(45deg);
+.select::after {
+  content: '\25BC';
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 0 1em;
+  background: #34495e;
+  cursor: pointer;
+  pointer-events: none;
+  -webkit-transition: .25s all ease;
+  -o-transition: .25s all ease;
+  transition: .25s all ease;
 }
-/* color hexes
+\
+.select:hover::after {
+  color: #f39c12;
+} */
+/*
 #7EC9D7
 #F49278
 #FBFAEF
- */
+  */
 </style>
-<!--     name: 'mainBar',
-    data () {
-      return {
-        defaultData : [],
-        californiaData : [],
-        selectedPorts : [],
-        selectedMeasures : [],
-        selected : 'California',
-        options: ["California", "USA-Mexico"]
-      }
-    },
-    methods: {
-      getCheckBoxes: function (data) {
-        var container = []
-        for (var i = 0; i < data.length; i++) {
-          container.push(data[i].port_name)
-          var unique = [... new Set(container)]
-          // // //console.log(unique);
-        }
-      }
-    },
-    watch: {
-      selectedArea: function () {
-        getCheckBoxes(this.defaultData)
-      }
-    },
-    mounted: function () {
-      axios.get("https://data.transportation.gov/resource/keg4-3bc2.json?border=US-Mexico%20Border").then(response => {
-        this.defaultData = response.data;
-        var defaultData = this.defaultData
-        var caliData  = defaultData.filter(function(item) {
-          return "CA".includes(item.state);
-        });
-        this.californiaData = caliData;
-        getCheckBoxes(this.californiaData)
-
-      })
-    }
-
--->
