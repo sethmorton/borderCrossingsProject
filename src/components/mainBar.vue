@@ -1,22 +1,8 @@
 <template>
   <div class="expand">
+    <!-- Set background size and image -->
     <div class="bgimg w3-display-container w3-animate-opacity ">
-      <!-- <div class="w3-display-middle">
-        <h1 class="w3-jumbo w3-animate-top">
-          <span style="color: #F49278">{{ totalNumber }}</span> <span style="color: #FBFAEF">a</span>
-          <span style="color: #F49278">{{ percentChangeForDom }}</span> <span style="color: #FBFAEF">% change since</span>
-          <span style="color: #F49278">{{ previousYearOrNot }} </span>
-        </h1>
-
-         <hr class="w3-border-grey" style="margin:auto;width:40%" />
-        <p class="w3-large w3-center w3-animate-left">
-          {{ totalNumber }} a <code>{{ percentChangeForDom }}</code
-          >% change since {{previousYearOrNot}}
-        </p>
-        <button v-on:click="isHidden = !isHidden">Options</button>
-      </div> -->
       <div class="centerTop">
-        <!--  -->
         <h1 class="w3-xxlarge w3-animate-top" style="color: brown ">
           Total border crossings in
           <span style="color: black">{{ selectedArea }}</span> from
@@ -29,10 +15,11 @@
       </div>
       <div class="leftBottom">
         <div>
+          <!-- Stylized button for modal -->
           <b-button class="btn fourth" v-b-modal.modal-scrollable
             >Options</b-button
           >
-
+          <!-- Modal and Modal title -->
           <b-modal
             id="modal-scrollable"
             size="sm"
@@ -40,6 +27,7 @@
             title="Options: Query Options"
             description="query options"
           >
+          <!-- Start of Query Options -->
             <div class="w3-display-container grid-container ">
               <div class="grid-item-startmonth">
                 <div style="text-align: left" class="select">
@@ -66,16 +54,6 @@
                   </select>
                 </div>
               </div>
-              <!-- <div class="grid-item-startyear">
-                <div class="select">
-                  <select name="slct" id="slct">
-                    <option selected disabled>Choose an option</option>
-                    <option value="1">Pure CSS</option>
-                    <option value="2">No JS</option>
-                    <option value="3">Nice!</option>
-                  </select>
-                </div>
-              </div> -->
               <div class="grid-item-starttime">
                 <h2 style="text-align: left; ">Start Time</h2>
               </div>
@@ -104,16 +82,6 @@
                   </select>
                 </div>
               </div>
-              <!-- <div class="grid-item-startyear">
-                <div class="select">
-                  <select name="slct" id="slct">
-                    <option selected disabled>Choose an option</option>
-                    <option value="1">Pure CSS</option>
-                    <option value="2">No JS</option>
-                    <option value="3">Nice!</option>
-                  </select>
-                </div>
-              </div> -->
               <div class="grid-item-endtime">
                 <h2 style="text-align: left padding-bottom: 10px;">End Time</h2>
               </div>
@@ -133,10 +101,6 @@
                     {{ choice }}</label
                   ><br />
                 </div>
-                <!-- <label class="checkbox-label"><input type="checkbox" value="115">-middle</label><br>
-                <label class="checkbox-label"><input type="checkbox" value="115">-ldlafjaldfjsllsdfj</label><br>
-                <label class="checkbox-label"><input type="checkbox" value="115">-middle</label><br>
-                <label class="checkbox-label"><input type="checkbox" value="115">lsknslknsldfknsldfksfasegsgagssg</label> -->
               </div>
               <div class="measures-grid">
                 <h2 style="text-align: left">Measure</h2>
@@ -176,6 +140,7 @@
           </b-modal>
         </div>
       </div>
+      <!-- Another container -->
       <div class="w3-display-middle">
         <h1 class="w3-jumbo w3-animate-top w3-center" style="color: black">
           {{ totalNumber }}
@@ -193,14 +158,13 @@
 </template>
 
 <script>
+// import axios
 import axios from "axios";
-// import Datepicker from 'vuejs-datepicker';
-export default {
-  // components: {
-  //   Datepicker
-  // },
-  name: "mainBar",
 
+export default {
+  // asign name for app.vue
+  name: "mainBar",
+  // every global variable
   data() {
     return {
       isHidden: true,
@@ -244,127 +208,102 @@ export default {
       endYearMonth: ""
     };
   },
+  // methods
   methods: {
+    // set the query options
     setGetCheckBoxes: function(data) {
-      // console.log("it has been run");
+      // set empty arrays
       var containerPort = [];
       var containerMeasure = [];
       var containerTime = [];
+      // for loop unique arrays
       for (let i = 0; i < data.length; i++) {
         containerPort.push(data[i].port_name);
         containerMeasure.push(data[i].measure);
         containerTime.push(data[i].date);
       }
+      // uniqueArrays for checkboxes, selects, and radios
       var uniquePort = [...new Set(containerPort)];
       var uniqueMeasure = [...new Set(containerMeasure)];
       var uniqueTime = [...new Set(containerTime)];
       this.optionsStartSelect = uniqueTime;
       this.optionsEndSelect = uniqueTime;
       this.optionsForPorts = uniquePort;
-      //console.log(uniquePort);
-      //console.log("uniquePort");
       this.selectedOptionsForPorts = uniquePort;
       this.optionsForMeasure = uniqueMeasure;
       this.selectedOptionsForMeasure = uniqueMeasure;
     },
+    // pipe the json for selected ports, selected measures
     pipeData: function(data) {
-      //console.log(data);
       var selectedOptionsForPorts = this.selectedOptionsForPorts;
       var filterOutput1 = data.filter(function(item) {
         return selectedOptionsForPorts.includes(item.port_name);
       });
-      // console.log(filterOutput1);
-      // //console.log(filterOutput1);
       var selectedOptionsForMeasure = this.selectedOptionsForMeasure;
-      // console.log(selectedOptionsForMeasure);
       var unpipedTime = filterOutput1.filter(function(item) {
         return selectedOptionsForMeasure.includes(item.measure);
       });
       this.unpipedTime = unpipedTime;
-      //console.log("below is unpipedtime");
-      //console.log(this.unpipedTime);
+      // pass the filtered data into the time dates "getter"
       this.getTimeDates(this.unpipedTime);
     },
+    // filter for selected time
     getTimeDates: function(unpipedTime) {
-      // console.log(unpipedTime);
       this.selectedEndSelect =
         this.selectedEndYear + "-" + this.selectedEndMonth + "-01T00:00:00.000";
-
-      // console.log(this.selectedEndSelect);
-      //console.log("loooser");
       var endDate = this.selectedEndSelect;
-      //console.log(endDate);
       this.selectedStartSelect =
         this.selectedStartYear +
         "-" +
         this.selectedStartMonth +
         "-01T00:00:00.000";
-
-      //console.log(this.selectedStartSelect);
       var startDate = this.selectedStartSelect;
-      //console.log(startDate);
-      //console.log("below is unpiped time");
-      //console.log(unpipedTime);
       this.pipeOriginalTimeData(startDate, endDate, unpipedTime);
     },
+    // pass the filtered data and the time dates
     pipeOriginalTimeData(startDate, endDate, unpipedTime) {
       var pipedTime = unpipedTime.filter(function(obj) {
         return obj.date >= startDate && obj.date <= endDate;
       });
-
-      //console.log(pipedTime);
+      // pass the filtered data into the percent function
       this.getNumbers(pipedTime, unpipedTime);
     },
+    // get the total number
     getNumbers: function(pipedTime, unpipedTime) {
-      //console.log(pipedTime);
-      //console.log(unpipedTime);
+      // set empty array for sum
       var containerValue = [];
       for (var i = 0; i < pipedTime.length; i++) {
         containerValue.push(pipedTime[i].value);
       }
+      // convert strings to numbers with map functions
       var numberFy = containerValue.map(Number);
       const reducer = (accumulator, currentValue) => accumulator + currentValue;
-      // console.log(numberFy);
+      // reduce (sum) the array
       var totalValue = numberFy.reduce(reducer);
-      //console.log(totalValue);
+
       totalValue.toLocaleString();
-      //console.log("hosifdnsoifhsofih");
-      //console.log(totalValue);
-      var hello = this.formatNumber(totalValue);
-      //console.log(hello);
+      // format number method for insertion of commas
+      var forComma = this.formatNumber(totalValue);
+      // reset container value for next watch
       containerValue.length = 0;
-      // console.log(numberFy);
+      this.totalNumber = forComma;
 
-      this.totalNumber = hello;
-
-      // //console.log(filterOutput2);
-
+      // get percent change
       this.percentChange(totalValue, pipedTime, unpipedTime);
     },
+    // comma method
     formatNumber: function(num) {
       return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
     },
+    // percentChange method to get percentchange for the years - 1 of the original time filter year
     percentChange: function(totalOldValue, pipedTime, filterBeforeTime) {
-      //console.log(totalOldValue);
-      //console.log(pipedTime);
-      //console.log(filterBeforeTime);
+      // set dates and subtract a year off of them
       var endSelected = this.selectedEndSelect;
-      //console.log("omg");
-      //console.log(endSelected);
-      //console.log("omg");
       var startSelected = this.selectedStartSelect;
-      // //console.log(endSelected);
-      // //console.log(startSelected);
       var endDate = new Date(endSelected);
       var dateForPageEnd = endDate.getFullYear();
-      //console.log(dateForPageEnd);
       this.dateForPageEnd = dateForPageEnd;
-      //console.log(endDate);
-      //console.log("helloworld");
-
       endDate.setMonth(endDate.getMonth() - 12);
-      //console.log(endDate);
-
       var startDate = new Date(startSelected);
       var dateForPageStart = startDate.getFullYear();
       //console.log(dateForPageStart);
@@ -373,12 +312,6 @@ export default {
       startDate.setMonth(startDate.getMonth() - 12);
       this.previousYearOrNot =
         startDate.getFullYear() + " to " + endDate.getFullYear();
-      //console.log("blablabla");
-      //console.log(startDate);
-      //console.log("seperator");
-
-      //console.log(filterBeforeTime);
-      //console.log("seperator");
       var startDateStepsIsoMonth = startDate.getMonth() + 1;
       var startDateStepsIsoYear = startDate.getFullYear();
       var endDateStepsIsoMonth = endDate.getMonth() + 1;
@@ -390,41 +323,28 @@ export default {
         "-01T00:00:00.000";
       var endDateFinal =
         endDateStepsIsoYear + "-" + endDateStepsIsoMonth + "-01T00:00:00.000";
-      //console.log(startDateFinal);
-      //console.log(endDateFinal);
-      //console.log("below is startDateStepsIsoYear");
-      //console.log(startDateStepsIsoYear);
-      //console.log("below is startDateStepsIso Month");
-      //console.log(startDateStepsIsoMonth);
-      //console.log("seperator");
+        // filter the data based on the newly created date strings
       var result = filterBeforeTime.filter(function(obj) {
         return obj.date >= startDateFinal && obj.date <= endDateFinal;
       });
-
-      //console.log(result);
-      //console.log("seperator above is result value");
-      //console.log(totalOldValue);
-      //console.log("seperator");
+      // same process as before, getting the total sum for the future math
       var containerValue = [];
       for (var i = 0; i < result.length; i++) {
         containerValue.push(result[i].value);
       }
-      //console.log(containerValue);
       var numberFy1 = containerValue.map(Number);
       const reducer = (accumulator, currentValue) => accumulator + currentValue;
-
       var totalValue = numberFy1.reduce(reducer);
-      //console.log(totalValue);
-
+      // this is where the math happens
       var percentChange = ((totalValue - totalOldValue) / totalValue) * 100;
 
-      //console.log(percentChange);
+      // rounding the very long number
       var percentChangeNew = function money_round(num) {
+        //
         return Math.ceil(num * 100) / 100;
       };
+      // setting the global variable as the rounded percent change
       this.percentChangeForDom = percentChangeNew(percentChange);
-      //console.log(this.percentChangeForDom);
-      //console.log(this.selectedArea);
     },
     getDataAxios: function(
       selectedEndYear,
@@ -432,10 +352,11 @@ export default {
       selectedStartYear,
       selectedStartMonth
     ) {
-      // console.log(selectedStartMonth);
+      // this method is first, fetching data by dynamically inserting dates subtracted by one into the query to get enough json for the percent change function
 
-      var startYearWithoutSplice = Number(selectedStartYear) - 1;
-
+      // subtracting start year by one for query
+      var startYearSubtracted = Number(selectedStartYear) - 1;
+      // function for getting month name for dom
       var month_name = function(dt) {
         var mlist = [
           "Jan.",
@@ -453,9 +374,7 @@ export default {
         ];
         return mlist[dt.getMonth()];
       };
-      // // console.log(
-      //    month_name(new Date(selectedStartMonth + "/01/" + selectedStartYear))
-      //  );
+      // created dates for enddate bigger than startdate "filter"
       this.startYearMonth = month_name(
         new Date(selectedStartMonth + "/01/" + selectedStartYear)
       );
@@ -470,94 +389,53 @@ export default {
           "Please ensure that the End Date is greater than or equal to the Start Date."
         );
       }
-      // //console.log(
-      //   "https://data.transportation.gov/resource/keg4-3bc2.json?$limit=100000&$where=date between '" +
-      //     startYearWithoutSplice +
-      //     "-" +
-      //     selectedStartMonth +
-      //     "-01' and '" +
-      //     selectedEndYear +
-      //     "-" +
-      //     selectedEndMonth +
-      //     "-01'"
-      // );
 
-      // // console.log(
-      //    "https://data.transportation.gov/resource/keg4-3bc2.json?$limit=100000&$where=date between '" +
-      //      startYearWithoutSplice +
-      //      // 2019 +
-      //      "-" +
-      //      selectedStartMonth +
-      //      // 11 +
-      //      "-01' and '" +
-      //      selectedEndYear +
-      //      // 2019 +
-      //      "-" +
-      //      selectedEndMonth +
-      //      // 11 +
-      //      "-01'"
-      //  );
+      // fetching data
+      // limit is set to the max because i want to get ALL json from the time periods
       axios
         .get(
           "https://data.transportation.gov/resource/keg4-3bc2.json?$limit=100000&$where=date between '" +
-            startYearWithoutSplice +
-            // 2019 +
+            startYearSubtracted +
             "-" +
             selectedStartMonth +
-            // 11 +
             "-01' and '" +
             selectedEndYear +
-            // 2019 +
             "-" +
             selectedEndMonth +
-            // 11 +
             "-01'"
-          // https://data.transportation.gov/resource/keg4-3bc2.json?$where=date%20between%20%271996-01-01T00:00:00.000%27%20and%20%272019-01-01T00:00:00.000%27
+
         )
         .then(response => {
+          // getting the response
           var reaction = response.data;
-
-          // console.log(response.data);
+          // filtering the data down to only us-mexico
           var defaultData = reaction.filter(function(item) {
             return "US-Mexico Border".includes(item.border);
           });
           //console.log(defaultData);
           this.defaultData = defaultData;
-          // var container = []
-          // for (var i = 0; i < defaultData.length; i++) {
-          //   container.push(defaultData[i].date);
-          //
-          // }
-          // var uniqueContainer = [... new Set(container)]
 
-          // // //console.lxog(this.defaultData);
           var defaultDataToCali = this.defaultData;
+          // filtering data down to only california (this set of data will be used on default)
           var caliData = defaultDataToCali.filter(function(item) {
             return "CA".includes(item.state);
           });
-
-          //console.log(this.californiaData);
+          // this reduces time as the method is only filtering what is neccesary
           if (this.selectedArea == ["California"]) {
+
             this.pipeData(caliData);
           }
           if (this.selectedArea == ["USA-Mexico"]) {
             this.pipeData(defaultData);
           }
         });
-    },
-    scrollMeTo(refName) {
-      var element = this.$refs[refName];
-      var top = element.offsetTop;
-
-      window.scrollTo(0, top);
     }
+    //
   },
   watch: {
+    // event listener for when any selected array changes
     selectedArea: function() {
-      //console.log(this.selectedArea);
-      //console.log(this.defaultData);
       if (this.selectedArea == ["California"]) {
-        //console.log("California");
         this.setGetCheckBoxes(this.californiaData);
         this.getDataAxios(
           this.selectedEndYear,
@@ -567,7 +445,6 @@ export default {
         );
       }
       if (this.selectedArea == ["USA-Mexico"]) {
-        //console.log("USA-MEXICO");
         this.setGetCheckBoxes(this.defaultData);
         this.getDataAxios(
           this.selectedEndYear,
@@ -579,8 +456,6 @@ export default {
     },
 
     selectedEndYear: function() {
-      //console.log("googoogaaggaaa");
-      //console.log(this.selectedEndYear);
       this.getDataAxios(
         this.selectedEndYear,
         this.selectedEndMonth,
@@ -597,8 +472,6 @@ export default {
       );
     },
     selectedStartYear: function() {
-      ////console.log("googoogaaggaaa");
-      //console.log(this.selectedEndYear);
       this.getDataAxios(
         this.selectedEndYear,
         this.selectedEndMonth,
@@ -607,11 +480,6 @@ export default {
       );
     },
     selectedStartMonth: function() {
-      // console.log(this.selectedEndYear);
-      // console.log(this.selectedEndMonth);
-      // console.log(this.selectedStartYear);
-      // console.log(this.selectedStartMonth);
-
       this.getDataAxios(
         this.selectedEndYear,
         this.selectedEndMonth,
@@ -622,7 +490,6 @@ export default {
 
     selectedOptionsForMeasure: function() {
       if (this.selectedArea == ["California"]) {
-        // console.log(this.selectedOptionsForMeasure);
         this.pipeData(this.californiaData);
       }
       if (this.selectedArea == ["USA-Mexico"]) {
@@ -638,13 +505,15 @@ export default {
       }
     }
   },
+
   mounted() {
+    // this is on page load
     axios
       .get("https://data.transportation.gov/resource/keg4-3bc2.json")
       .then(response => {
         var reactione = response.data;
-        /* eslint-disable no-unused-vars */
-        var blabla = new Date(
+        // get max date possible for query
+        var maxDate = new Date(
           Math.max.apply(
             null,
             reactione.map(function(e) {
@@ -652,43 +521,32 @@ export default {
             })
           )
         );
-        // console.log(blabla);
+        // get the us-mexico data
         var defaultData = reactione.filter(function(item) {
           return "US-Mexico Border".includes(item.border);
         });
-        //console.log(defaultData);
-        this.defaultData = defaultData;
-        // var container = []
-        // for (var i = 0; i < defaultData.length; i++) {
-        //   container.push(defaultData[i].date);
-        //
-        // }
-        // var uniqueContainer = [... new Set(container)]
 
-        // // //console.lxog(this.defaultData);
+        this.defaultData = defaultData;
         var defaultDataToCali = this.defaultData;
+        // get the cali data for the if
         var caliData = defaultDataToCali.filter(function(item) {
           return "CA".includes(item.state);
         });
-        // //console.log(this.date);
-        // //  // // //console.log(caliData);
         this.californiaData = caliData;
+        // subtract the years
+        var selectedEndYear = maxDate.getFullYear();
+        var selectedEndMonth = maxDate.getMonth() + 1;
 
-        // console.log(blabla);
-        // console.log(blabla.getMonth() + 1);
-        var selectedEndYear = blabla.getFullYear();
-        var selectedEndMonth = blabla.getMonth() + 1;
-
-        var selectedStartYear = blabla.getFullYear() - 1;
+        var selectedStartYear = maxDate.getFullYear() - 1;
         var data = [];
+        // loop until the dynamix year
         for (var i = selectedEndYear; i >= 1996; i--) {
-          // var dynamicData = this.dataNonDymanicYear
           data.push(i);
         }
+        // insert array of year
         this.dynamicYear = data;
-        // console.log(caliData);
-
         this.setGetCheckBoxes(caliData);
+        // call the axios method
         this.getDataAxios(
           selectedEndYear,
           selectedEndMonth,
@@ -699,8 +557,6 @@ export default {
   }
 };
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 h3 {
   margin: 40px 0 0;
@@ -894,60 +750,5 @@ label {
   grid-column-end: 3;
   padding-top: 60px;
   padding-bottom: 30px;
-} /*
-select {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  -ms-appearance: none;
-  appearance: none;
-  outline: 0;
-  box-shadow: none;
-  border: 0 !important;
-  background: #2c3e50;
-  background-image: none;
 }
-
-select::-ms-expand {
-  display: none;
-}
-
-.select {
-  position: relative;
-  display: flex;
-  width: 20em;
-  height: 3em;
-  line-height: 3;
-  background: #2c3e50;
-  overflow: hidden;
-  border-radius: .25em;
-}
-select {
-  flex: 1;
-  padding: 0 .5em;
-  color: #fff;
-  cursor: pointer;
-}
-
-.select::after {
-  content: '\25BC';
-  position: absolute;
-  top: 0;
-  right: 0;
-  padding: 0 1em;
-  background: #34495e;
-  cursor: pointer;
-  pointer-events: none;
-  -webkit-transition: .25s all ease;
-  -o-transition: .25s all ease;
-  transition: .25s all ease;
-}
-\
-.select:hover::after {
-  color: #f39c12;
-} */
-/*
-#7EC9D7
-#F49278
-#FBFAEF
-  */
 </style>
