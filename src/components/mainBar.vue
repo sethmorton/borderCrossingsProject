@@ -148,7 +148,7 @@
         <hr class="w3-border-grey" style="margin:auto;width:40%" />
         <h1 style="color: brown; font-size: 1.5rem;" class=" w3-center">
           A
-          <span style="color: black"> {{ percentChangeForDom }}%</span> change
+          <span style="color: black"> {{ percentChangeForDom }}%</span> <span style="color: black"> {{ increaseOrDecrease }}</span>
           from border crossings between
           <span ref="app" style="color: black">{{ previousYearOrNot }}</span>
         </h1>
@@ -205,7 +205,8 @@ export default {
       unpipedTime: [],
       previousYearOrNot: "",
       startYearMonth: "",
-      endYearMonth: ""
+      endYearMonth: "",
+      increaseOrDecrease: ""
     };
   },
   // methods
@@ -280,7 +281,6 @@ export default {
       const reducer = (accumulator, currentValue) => accumulator + currentValue;
       // reduce (sum) the array
       var totalValue = numberFy.reduce(reducer);
-
       totalValue.toLocaleString();
       // format number method for insertion of commas
       var forComma = this.formatNumber(totalValue);
@@ -335,6 +335,18 @@ export default {
       var numberFy1 = containerValue.map(Number);
       const reducer = (accumulator, currentValue) => accumulator + currentValue;
       var totalValue = numberFy1.reduce(reducer);
+      // a series of variables for extracting commas and numberfy string for if statement
+      var totalNumberOld = this.totalNumber
+      var replaceCommas = totalNumberOld.replace(/,/g, "");
+      var replacedCommas = Number(replaceCommas)
+      console.log(replacedCommas);
+      // is the value an increase since the previous years or not?
+      if (replacedCommas > totalValue) {
+        this.increaseOrDecrease = "increase"
+      }
+      if (replacedCommas < totalValue) {
+        this.increaseOrDecrease = "decrease"
+      }
       // this is where the math happens
       var percentChange = ((totalValue - totalOldValue) / totalValue) * 100;
 
@@ -343,8 +355,9 @@ export default {
         //
         return Math.ceil(num * 100) / 100;
       };
+      var forAbsolute = percentChangeNew(percentChange);
       // setting the global variable as the rounded percent change
-      this.percentChangeForDom = percentChangeNew(percentChange);
+      this.percentChangeForDom = Math.abs(forAbsolute)
     },
     getDataAxios: function(
       selectedEndYear,
@@ -389,7 +402,6 @@ export default {
           "Please ensure that the End Date is greater than or equal to the Start Date."
         );
       }
-
       // fetching data
       // limit is set to the max because i want to get ALL json from the time periods
       axios
@@ -412,7 +424,6 @@ export default {
           var defaultData = reaction.filter(function(item) {
             return "US-Mexico Border".includes(item.border);
           });
-          //console.log(defaultData);
           this.defaultData = defaultData;
 
           var defaultDataToCali = this.defaultData;
