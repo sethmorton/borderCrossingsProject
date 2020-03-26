@@ -171,7 +171,7 @@ export default {
       isHidden: true,
       defaultData: [],
       californiaData: [],
-      selectedArea: "USA-Mexico",
+      selectedArea: "California",
       optionsForArea: ["California", "USA-Mexico"],
       selectedOptionsForPorts: [],
       optionsForPorts: [],
@@ -510,18 +510,9 @@ export default {
             })
           )
         );
-
-        // get the us-mexico data
-        var usaData = reactione.filter(function(item) {
-          return "US-Mexico Border".includes(item.border);
+        var caliData = reactione.filter(function(item) {
+          return "CA".includes(item.state);
         });
-        //
-        //
-        // var defaultDataToCali = defaultData;
-        // // get the cali data for the if
-        // var caliData = reactione.filter(function(item) {
-        //   return "CA".includes(item.state);
-        // });
 
         // subtract the years
         var selectedEndYear = maxDate.getFullYear();
@@ -529,7 +520,7 @@ export default {
         var selectedStartMonth = maxDate.getMonth() + 1;
         var selectedStartYear = maxDate.getFullYear() - 1;
         var data = [];
-        // loop until the dynamix year
+        // loop until the dynamic year
         for (var i = selectedEndYear; i >= 1996; i--) {
           data.push(i);
         }
@@ -544,10 +535,10 @@ export default {
         var containerMeasure = [];
         var containerTime = [];
         // for loop unique arrays
-        for (let i = 0; i < usaData.length; i++) {
-          containerPort.push(usaData[i].port_name);
-          containerMeasure.push(usaData[i].measure);
-          containerTime.push(usaData[i].date);
+        for (let i = 0; i < caliData.length; i++) {
+          containerPort.push(caliData[i].port_name);
+          containerMeasure.push(caliData[i].measure);
+          containerTime.push(caliData[i].date);
         }
         // uniqueArrays for checkboxes, selects, and radios
         var uniquePort = [...new Set(containerPort)];
@@ -626,6 +617,7 @@ export default {
       var gaagaa = this.selectedOptionsForMeasure;
 
       if (gaagaa.length == booboo.length && this.hasBeenCreated) {
+        console.log("the query options have not been touched");
       }
       if (gaagaa.length == booboo.length && this.hasBeenCreated == false) {
         if (this.selectedArea == "California") {
@@ -653,6 +645,7 @@ export default {
       var gaagaa = this.selectedOptionsForPorts;
 
       if (gaagaa.length == booboo.length && this.hasBeenCreated) {
+        console.log("the query options have not been touched");
       }
       if (gaagaa.length == booboo.length && this.hasBeenCreated == false) {
         if (this.selectedArea == "California") {
