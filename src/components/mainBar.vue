@@ -27,7 +27,7 @@
             title="Options: Query Options"
             description="query options"
           >
-          <!-- Start of Query Options -->
+            <!-- Start of Query Options -->
             <div class="w3-display-container grid-container ">
               <div class="grid-item-startmonth">
                 <div style="text-align: left" class="select">
@@ -148,7 +148,8 @@
         <hr class="w3-border-grey" style="margin:auto;width:40%" />
         <h1 style="color: brown; font-size: 1.5rem;" class=" w3-center">
           A
-          <span style="color: black"> {{ percentChangeForDom }}%</span> <span style="color: black"> {{ increaseOrDecrease }}</span>
+          <span style="color: black"> {{ percentChangeForDom }}%</span>
+          <span style="color: black"> {{ increaseOrDecrease }}</span>
           from border crossings between
           <span ref="app" style="color: black">{{ previousYearOrNot }}</span>
         </h1>
@@ -170,7 +171,7 @@ export default {
       isHidden: true,
       defaultData: [],
       californiaData: [],
-      selectedArea: "California",
+      selectedArea: "USA-Mexico",
       optionsForArea: ["California", "USA-Mexico"],
       selectedOptionsForPorts: [],
       optionsForPorts: [],
@@ -181,7 +182,7 @@ export default {
       selectedStartSelect: "2019-11-01T00:00:00.000",
       selectedEndSelect: "2019-12-01T00:00:00.000",
       totalNumber: "",
-      dateForPageStart: "",
+
       dateForPageEnd: "",
       percentChangeForDom: "",
       dynamicYear: [],
@@ -196,6 +197,7 @@ export default {
         "05",
         "04",
         "03",
+        "02",
         "01"
       ],
       selectedStartYear: "2018",
@@ -206,7 +208,8 @@ export default {
       previousYearOrNot: "",
       startYearMonth: "",
       endYearMonth: "",
-      increaseOrDecrease: ""
+      increaseOrDecrease: "",
+      hasBeenCreated: null
     };
   },
   // methods
@@ -266,6 +269,7 @@ export default {
       var pipedTime = unpipedTime.filter(function(obj) {
         return obj.date >= startDate && obj.date <= endDate;
       });
+
       // pass the filtered data into the percent function
       this.getNumbers(pipedTime, unpipedTime);
     },
@@ -281,9 +285,11 @@ export default {
       const reducer = (accumulator, currentValue) => accumulator + currentValue;
       // reduce (sum) the array
       var totalValue = numberFy.reduce(reducer);
+
       totalValue.toLocaleString();
       // format number method for insertion of commas
       var forComma = this.formatNumber(totalValue);
+
       // reset container value for next watch
       containerValue.length = 0;
       this.totalNumber = forComma;
@@ -298,54 +304,72 @@ export default {
     // percentChange method to get percentchange for the years - 1 of the original time filter year
     percentChange: function(totalOldValue, pipedTime, filterBeforeTime) {
       // set dates and subtract a year off of them
-      var endSelected = this.selectedEndSelect;
-      var startSelected = this.selectedStartSelect;
-      var endDate = new Date(endSelected);
-      var dateForPageEnd = endDate.getFullYear();
-      this.dateForPageEnd = dateForPageEnd;
-      endDate.setMonth(endDate.getMonth() - 12);
-      var startDate = new Date(startSelected);
-      var dateForPageStart = startDate.getFullYear();
-      //console.log(dateForPageStart);
-      this.dateForPageStart = dateForPageStart;
 
+      var endSelected = this.selectedEndSelect;
+
+      var startSelected = this.selectedStartSelect;
+
+      var endDate = new Date(endSelected);
+
+      var startDate = new Date(startSelected);
       startDate.setMonth(startDate.getMonth() - 12);
+      endDate.setMonth(endDate.getMonth() - 12);
+
       this.previousYearOrNot =
-        startDate.getFullYear() + " to " + endDate.getFullYear();
+        this.startYearMonth +
+        " " +
+        startDate.getFullYear() +
+        " to " +
+        this.endYearMonth +
+        " " +
+        endDate.getFullYear();
       var startDateStepsIsoMonth = startDate.getMonth() + 1;
+
       var startDateStepsIsoYear = startDate.getFullYear();
+
       var endDateStepsIsoMonth = endDate.getMonth() + 1;
       var endDateStepsIsoYear = endDate.getFullYear();
+
       var startDateFinal =
-        startDateStepsIsoYear +
+        this.minTwoDigits(startDateStepsIsoYear) +
         "-" +
-        startDateStepsIsoMonth +
+        this.minTwoDigits(startDateStepsIsoMonth) +
         "-01T00:00:00.000";
       var endDateFinal =
-        endDateStepsIsoYear + "-" + endDateStepsIsoMonth + "-01T00:00:00.000";
-        // filter the data based on the newly created date strings
+        this.minTwoDigits(endDateStepsIsoYear) +
+        "-" +
+        this.minTwoDigits(endDateStepsIsoMonth) +
+        "-01T00:00:00.000";
+      // filter the data ased on the newly created date strings
+
       var result = filterBeforeTime.filter(function(obj) {
         return obj.date >= startDateFinal && obj.date <= endDateFinal;
       });
+
       // same process as before, getting the total sum for the future math
       var containerValue = [];
       for (var i = 0; i < result.length; i++) {
         containerValue.push(result[i].value);
       }
+
       var numberFy1 = containerValue.map(Number);
+
       const reducer = (accumulator, currentValue) => accumulator + currentValue;
+
       var totalValue = numberFy1.reduce(reducer);
+
       // a series of variables for extracting commas and numberfy string for if statement
-      var totalNumberOld = this.totalNumber
+      var totalNumberOld = this.totalNumber;
+
       var replaceCommas = totalNumberOld.replace(/,/g, "");
-      var replacedCommas = Number(replaceCommas)
-      console.log(replacedCommas);
+      var replacedCommas = Number(replaceCommas);
+
       // is the value an increase since the previous years or not?
       if (replacedCommas > totalValue) {
-        this.increaseOrDecrease = "increase"
+        this.increaseOrDecrease = "increase";
       }
       if (replacedCommas < totalValue) {
-        this.increaseOrDecrease = "decrease"
+        this.increaseOrDecrease = "decrease";
       }
       // this is where the math happens
       var percentChange = ((totalValue - totalOldValue) / totalValue) * 100;
@@ -357,7 +381,31 @@ export default {
       };
       var forAbsolute = percentChangeNew(percentChange);
       // setting the global variable as the rounded percent change
-      this.percentChangeForDom = Math.abs(forAbsolute)
+      this.percentChangeForDom = Math.abs(forAbsolute);
+    },
+    getNewQueryOptions: function(data) {
+      var containerPort = [];
+      var containerMeasure = [];
+      var containerTime = [];
+      // for loop unique arrays
+      for (let i = 0; i < data.length; i++) {
+        containerPort.push(data[i].port_name);
+        containerMeasure.push(data[i].measure);
+        containerTime.push(data[i].date);
+      }
+      // uniqueArrays for checkboxes, selects, and radios
+      var uniquePort = [...new Set(containerPort)];
+      var uniqueMeasure = [...new Set(containerMeasure)];
+      var uniqueTime = [...new Set(containerTime)];
+      this.optionsStartSelect = uniqueTime;
+      this.optionsEndSelect = uniqueTime;
+      this.optionsForPorts = uniquePort;
+      this.selectedOptionsForPorts = uniquePort;
+      this.optionsForMeasure = uniqueMeasure;
+      this.selectedOptionsForMeasure = uniqueMeasure;
+    },
+    minTwoDigits: function(n) {
+      return (n < 10 ? "0" : "") + n;
     },
     getDataAxios: function(
       selectedEndYear,
@@ -369,6 +417,7 @@ export default {
 
       // subtracting start year by one for query
       var startYearSubtracted = Number(selectedStartYear) - 1;
+
       // function for getting month name for dom
       var month_name = function(dt) {
         var mlist = [
@@ -391,7 +440,7 @@ export default {
       this.startYearMonth = month_name(
         new Date(selectedStartMonth + "/01/" + selectedStartYear)
       );
-      // console.log(selectedEndMonth + "/01/" + selectedEndYear);
+
       this.endYearMonth = month_name(
         new Date(selectedEndMonth + "/01/" + selectedEndYear)
       );
@@ -402,6 +451,7 @@ export default {
           "Please ensure that the End Date is greater than or equal to the Start Date."
         );
       }
+
       // fetching data
       // limit is set to the max because i want to get ALL json from the time periods
       axios
@@ -415,15 +465,16 @@ export default {
             "-" +
             selectedEndMonth +
             "-01'"
-
         )
         .then(response => {
           // getting the response
           var reaction = response.data;
+
           // filtering the data down to only us-mexico
           var defaultData = reaction.filter(function(item) {
             return "US-Mexico Border".includes(item.border);
           });
+
           this.defaultData = defaultData;
 
           var defaultDataToCali = this.defaultData;
@@ -431,9 +482,10 @@ export default {
           var caliData = defaultDataToCali.filter(function(item) {
             return "CA".includes(item.state);
           });
+          this.californiaData = caliData;
+
           // this reduces time as the method is only filtering what is neccesary
           if (this.selectedArea == ["California"]) {
-
             this.pipeData(caliData);
           }
           if (this.selectedArea == ["USA-Mexico"]) {
@@ -441,29 +493,98 @@ export default {
           }
         });
     }
-    //
+  },
+
+  created() {
+    // this is on page load
+    axios
+      .get("https://data.transportation.gov/resource/keg4-3bc2.json?")
+      .then(response => {
+        var reactione = response.data;
+        // get max date possible for query
+        var maxDate = new Date(
+          Math.max.apply(
+            null,
+            reactione.map(function(e) {
+              return new Date(e.date);
+            })
+          )
+        );
+
+        // get the us-mexico data
+        var usaData = reactione.filter(function(item) {
+          return "US-Mexico Border".includes(item.border);
+        });
+        //
+        //
+        // var defaultDataToCali = defaultData;
+        // // get the cali data for the if
+        // var caliData = reactione.filter(function(item) {
+        //   return "CA".includes(item.state);
+        // });
+
+        // subtract the years
+        var selectedEndYear = maxDate.getFullYear();
+        var selectedEndMonth = maxDate.getMonth() + 1;
+        var selectedStartMonth = maxDate.getMonth() + 1;
+        var selectedStartYear = maxDate.getFullYear() - 1;
+        var data = [];
+        // loop until the dynamix year
+        for (var i = selectedEndYear; i >= 1996; i--) {
+          data.push(i);
+        }
+
+        // insert array of year
+        this.dynamicYear = data;
+
+        // call the axios method
+
+        // set empty arrays
+        var containerPort = [];
+        var containerMeasure = [];
+        var containerTime = [];
+        // for loop unique arrays
+        for (let i = 0; i < usaData.length; i++) {
+          containerPort.push(usaData[i].port_name);
+          containerMeasure.push(usaData[i].measure);
+          containerTime.push(usaData[i].date);
+        }
+        // uniqueArrays for checkboxes, selects, and radios
+        var uniquePort = [...new Set(containerPort)];
+        var uniqueMeasure = [...new Set(containerMeasure)];
+        var uniqueTime = [...new Set(containerTime)];
+        this.optionsStartSelect = uniqueTime;
+        this.optionsEndSelect = uniqueTime;
+        this.optionsForPorts = uniquePort;
+        this.selectedOptionsForPorts = uniquePort;
+        this.optionsForMeasure = uniqueMeasure;
+        this.selectedOptionsForMeasure = uniqueMeasure;
+        this.hasBeenCreated = true;
+        this.getDataAxios(
+          selectedEndYear,
+          selectedEndMonth,
+          selectedStartYear,
+          selectedStartMonth
+        );
+      });
   },
   watch: {
     // event listener for when any selected array changes
+
+    // had problems because the listener would trigger on mounted so lots of code preventing trigger on mounted
     selectedArea: function() {
-      if (this.selectedArea == ["California"]) {
-        this.setGetCheckBoxes(this.californiaData);
-        this.getDataAxios(
-          this.selectedEndYear,
-          this.selectedEndMonth,
-          this.selectedStartYear,
-          this.selectedStartMonth
-        );
+      if (this.selectedArea == "California") {
+        this.getNewQueryOptions(this.californiaData);
       }
-      if (this.selectedArea == ["USA-Mexico"]) {
-        this.setGetCheckBoxes(this.defaultData);
-        this.getDataAxios(
-          this.selectedEndYear,
-          this.selectedEndMonth,
-          this.selectedStartYear,
-          this.selectedStartMonth
-        );
+      if (this.selectedArea == "USA-Mexico") {
+        this.getNewQueryOptions(this.defaultData);
       }
+      this.getDataAxios(
+        this.selectedEndYear,
+        this.selectedEndMonth,
+        this.selectedStartYear,
+        this.selectedStartMonth
+      );
     },
 
     selectedEndYear: function() {
@@ -500,71 +621,58 @@ export default {
     },
 
     selectedOptionsForMeasure: function() {
-      if (this.selectedArea == ["California"]) {
-        this.pipeData(this.californiaData);
+      var booboo = this.optionsForMeasure;
+
+      var gaagaa = this.selectedOptionsForMeasure;
+
+      if (gaagaa.length == booboo.length && this.hasBeenCreated) {
       }
-      if (this.selectedArea == ["USA-Mexico"]) {
-        this.pipeData(this.defaultData);
+      if (gaagaa.length == booboo.length && this.hasBeenCreated == false) {
+        if (this.selectedArea == "California") {
+          this.pipeData(this.californiaData);
+        }
+        if (this.selectedArea == "USA-Mexico") {
+          this.pipeData(this.defaultData);
+        }
+      }
+      if (gaagaa.length != booboo.length) {
+        this.hasBeenCreated = false;
+
+        if (this.selectedArea == "California") {
+          this.pipeData(this.californiaData);
+        }
+        if (this.selectedArea == "USA-Mexico") {
+          this.pipeData(this.defaultData);
+        }
       }
     },
     selectedOptionsForPorts: function() {
-      if (this.selectedArea == ["California"]) {
-        this.pipeData(this.californiaData);
+
+      var booboo = this.optionsForPorts;
+
+      var gaagaa = this.selectedOptionsForPorts;
+
+      if (gaagaa.length == booboo.length && this.hasBeenCreated) {
       }
-      if (this.selectedArea == ["USA-Mexico"]) {
-        this.pipeData(this.defaultData);
+      if (gaagaa.length == booboo.length && this.hasBeenCreated == false) {
+        if (this.selectedArea == "California") {
+          this.pipeData(this.californiaData);
+        }
+        if (this.selectedArea == "USA-Mexico") {
+          this.pipeData(this.defaultData);
+        }
+      }
+      if (gaagaa.length != booboo.length) {
+        this.hasBeenCreated = false;
+
+        if (this.selectedArea == "California") {
+          this.pipeData(this.californiaData);
+        }
+        if (this.selectedArea == "USA-Mexico") {
+          this.pipeData(this.defaultData);
+        }
       }
     }
-  },
-
-  mounted() {
-    // this is on page load
-    axios
-      .get("https://data.transportation.gov/resource/keg4-3bc2.json")
-      .then(response => {
-        var reactione = response.data;
-        // get max date possible for query
-        var maxDate = new Date(
-          Math.max.apply(
-            null,
-            reactione.map(function(e) {
-              return new Date(e.date);
-            })
-          )
-        );
-        // get the us-mexico data
-        var defaultData = reactione.filter(function(item) {
-          return "US-Mexico Border".includes(item.border);
-        });
-
-        this.defaultData = defaultData;
-        var defaultDataToCali = this.defaultData;
-        // get the cali data for the if
-        var caliData = defaultDataToCali.filter(function(item) {
-          return "CA".includes(item.state);
-        });
-        this.californiaData = caliData;
-        // subtract the years
-        var selectedEndYear = maxDate.getFullYear();
-        var selectedEndMonth = maxDate.getMonth() + 1;
-
-        var selectedStartYear = maxDate.getFullYear() - 1;
-        var data = [];
-        // loop until the dynamix year
-        for (var i = selectedEndYear; i >= 1996; i--) {
-          data.push(i);
-        }
-        // insert array of year
-        this.dynamicYear = data;
-        this.setGetCheckBoxes(caliData);
-        // call the axios method
-        this.getDataAxios(
-          selectedEndYear,
-          selectedEndMonth,
-          selectedStartYear,
-          selectedEndMonth
-        );
-      });
   }
 };
 </script>
