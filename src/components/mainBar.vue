@@ -161,7 +161,7 @@
 <script>
 // import axios
 import axios from "axios";
-
+import moment from "moment";
 export default {
   // asign name for app.vue
   name: "mainBar",
@@ -305,30 +305,36 @@ export default {
     percentChange: function(totalOldValue, pipedTime, filterBeforeTime) {
       // set dates and subtract a year off of them
 
-      var endSelected = this.selectedEndSelect;
+      // var endSelected = this.selectedEndSelect;
+      // console.log(this.selectedEndSelect);
+      //
+      // var startSelected = this.selectedStartSelect;
 
-      var startSelected = this.selectedStartSelect;
+      var endDate = moment(this.selectedEndSelect)
+      var startDate = moment(this.selectedStartSelect);
+      var startDateMoment = moment(startDate).subtract(1, "years").format("YYYY-MM-DD")
 
-      var endDate = new Date(endSelected);
-
-      var startDate = new Date(startSelected);
-      startDate.setMonth(startDate.getMonth() - 12);
-      endDate.setMonth(endDate.getMonth() - 12);
+      var endDateMoment = moment(endDate).subtract(1, "years").format("YYYY-MM-DD")
+      console.log(moment(startDateMoment, "YYYY/MM/DD").year());
+     console.log(startDateMoment);
+     console.log(endDateMoment);
 
       this.previousYearOrNot =
         this.startYearMonth +
         " " +
-        startDate.getFullYear() +
+        moment(startDateMoment, "YYYY/MM/DD").year() +
         " to " +
         this.endYearMonth +
         " " +
-        endDate.getFullYear();
-      var startDateStepsIsoMonth = startDate.getMonth() + 1;
-
-      var startDateStepsIsoYear = startDate.getFullYear();
-
-      var endDateStepsIsoMonth = endDate.getMonth() + 1;
-      var endDateStepsIsoYear = endDate.getFullYear();
+        moment(endDateMoment, "YYYY/MM/DD").year();
+      var startDateStepsIsoMonth = moment(startDateMoment, "YYYY/MM/DD").month() + 1;
+      console.log(startDateStepsIsoMonth);
+      var startDateStepsIsoYear = moment(startDateMoment, "YYYY/MM/DD").year();
+      console.log(startDateStepsIsoYear);
+      var endDateStepsIsoMonth = moment(endDateMoment, "YYYY/MM/DD").month() + 1;
+      console.log(endDateStepsIsoMonth);
+      var endDateStepsIsoYear = moment(endDateMoment, "YYYY/MM/DD").year();
+      console.log(endDateStepsIsoYear);
 
       var startDateFinal =
         this.minTwoDigits(startDateStepsIsoYear) +
@@ -502,23 +508,46 @@ export default {
       .then(response => {
         var reactione = response.data;
         // get max date possible for query
-        var maxDate = new Date(
-          Math.max.apply(
-            null,
-            reactione.map(function(e) {
-              return new Date(e.date);
-            })
-          )
-        );
+        // var maxDate =
+        //   Math.max.apply(
+        //     null,
+        //     reactione.map(function(e) {
+        //       return e.date;
+        //     })
+        //   )
+        var max = null;
+        var min = null;
+
+        for (var j = 0; j < reactione.length; j++) {
+          var current = reactione[j];
+          if (max === null || current.source > max.source) {
+            max = current;
+          }
+          if (min === null || current.source < min.source) {
+            min = current;
+          }
+        }
+       //console.log(max.date);
+        var day = moment(max.date);
+        // moment(item.date,"YYYY/MM/DD").year()
+
+        // var newDate = maxDate.setHours( maxDate.getHours() + 8 );
+        //  //console.log(newDate);
+        ////console.log(maxDate.getTime());
+        // // var maxDateForSafari = maxDate.toUTCString();
+        // var newDate = new Date(maxDate.getTime());
+        ////console.log(newDate);
         var caliData = reactione.filter(function(item) {
           return "CA".includes(item.state);
         });
 
         // subtract the years
-        var selectedEndYear = maxDate.getFullYear();
-        var selectedEndMonth = maxDate.getMonth() + 1;
-        var selectedStartMonth = maxDate.getMonth() + 1;
-        var selectedStartYear = maxDate.getFullYear() - 1;
+        var selectedEndYear = moment(day, "YYYY/MM/DD").year();
+       //console.log(selectedEndYear);
+        var selectedEndMonth = moment(day, "YYYY/MM/DD").month() + 1;
+       //console.log(selectedEndMonth);
+        var selectedStartMonth = moment(day, "YYYY/MM/DD").month() + 1;
+        var selectedStartYear = moment(day, "YYYY/MM/DD").year() - 1;
         var data = [];
         // loop until the dynamic year
         for (var i = selectedEndYear; i >= 1996; i--) {
@@ -617,7 +646,7 @@ export default {
       var gaagaa = this.selectedOptionsForMeasure;
 
       if (gaagaa.length == booboo.length && this.hasBeenCreated) {
-        console.log("the query options have not been touched");
+       console.log("the query options have not been touched");
       }
       if (gaagaa.length == booboo.length && this.hasBeenCreated == false) {
         if (this.selectedArea == "California") {
@@ -639,13 +668,12 @@ export default {
       }
     },
     selectedOptionsForPorts: function() {
-
       var booboo = this.optionsForPorts;
 
       var gaagaa = this.selectedOptionsForPorts;
 
       if (gaagaa.length == booboo.length && this.hasBeenCreated) {
-        console.log("the query options have not been touched");
+       console.log("the query options have not been touched");
       }
       if (gaagaa.length == booboo.length && this.hasBeenCreated == false) {
         if (this.selectedArea == "California") {
