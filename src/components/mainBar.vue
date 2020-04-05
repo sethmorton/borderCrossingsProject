@@ -1,3 +1,23 @@
+Skip to content
+Search or jump to…
+
+Pull requests
+Issues
+Marketplace
+Explore
+
+@smphotography
+smphotography
+/
+borderCrossingsProject
+0
+00
+ Code Issues 0 Pull requests 0 Actions Projects 0 Wiki Security Insights Settings
+borderCrossingsProject/src/components/mainBar.vue
+ Seth Morton Commit For Deploy - Integration of Moment.js
+9f337a6 7 days ago
+894 lines (838 sloc)  27.2 KB
+
 <template>
   <div class="expand">
     <!-- Set background size and image -->
@@ -182,7 +202,6 @@ export default {
       selectedStartSelect: "2019-11-01T00:00:00.000",
       selectedEndSelect: "2019-12-01T00:00:00.000",
       totalNumber: "",
-
       dateForPageEnd: "",
       percentChangeForDom: "",
       dynamicYear: [],
@@ -239,6 +258,7 @@ export default {
     },
     // pipe the json for selected ports, selected measures
     pipeData: function(data) {
+      console.log(data);
       var selectedOptionsForPorts = this.selectedOptionsForPorts;
       var filterOutput1 = data.filter(function(item) {
         return selectedOptionsForPorts.includes(item.port_name);
@@ -253,28 +273,38 @@ export default {
     },
     // filter for selected time
     getTimeDates: function(unpipedTime) {
+
+        var selectedEndMonth = ('0' + this.selectedEndMonth).slice(-2)
+      console.log(selectedEndMonth);
+      var selectedStartMonth = ('0' + this.selectedStartMonth).slice(-2)
+      console.log(selectedStartMonth);
+
       this.selectedEndSelect =
-        this.selectedEndYear + "-" + this.selectedEndMonth + "-01T00:00:00.000";
+        this.selectedEndYear + "-" + selectedEndMonth + "-01T00:00:00.000";
       var endDate = this.selectedEndSelect;
+      console.log(endDate);
       this.selectedStartSelect =
         this.selectedStartYear +
         "-" +
-        this.selectedStartMonth +
+        selectedStartMonth +
         "-01T00:00:00.000";
       var startDate = this.selectedStartSelect;
       this.pipeOriginalTimeData(startDate, endDate, unpipedTime);
     },
     // pass the filtered data and the time dates
     pipeOriginalTimeData(startDate, endDate, unpipedTime) {
+
       var pipedTime = unpipedTime.filter(function(obj) {
         return obj.date >= startDate && obj.date <= endDate;
       });
+      console.log(pipedTime);
 
       // pass the filtered data into the percent function
       this.getNumbers(pipedTime, unpipedTime);
     },
     // get the total number
     getNumbers: function(pipedTime, unpipedTime) {
+      console.log(pipedTime);
       // set empty array for sum
       var containerValue = [];
       for (var i = 0; i < pipedTime.length; i++) {
@@ -285,15 +315,12 @@ export default {
       const reducer = (accumulator, currentValue) => accumulator + currentValue;
       // reduce (sum) the array
       var totalValue = numberFy.reduce(reducer);
-
       totalValue.toLocaleString();
       // format number method for insertion of commas
       var forComma = this.formatNumber(totalValue);
-
       // reset container value for next watch
       containerValue.length = 0;
       this.totalNumber = forComma;
-
       // get percent change
       this.percentChange(totalValue, pipedTime, unpipedTime);
     },
@@ -303,22 +330,22 @@ export default {
     },
     // percentChange method to get percentchange for the years - 1 of the original time filter year
     percentChange: function(totalOldValue, pipedTime, filterBeforeTime) {
+      console.log(filterBeforeTime);
       // set dates and subtract a year off of them
-
       // var endSelected = this.selectedEndSelect;
       // console.log(this.selectedEndSelect);
       //
       // var startSelected = this.selectedStartSelect;
-
+      console.log(this.selectedEndSelect);
       var endDate = moment(this.selectedEndSelect)
+      console.log(endDate);
       var startDate = moment(this.selectedStartSelect);
       var startDateMoment = moment(startDate).subtract(1, "years").format("YYYY-MM-DD")
-
+      console.log(startDateMoment);
       var endDateMoment = moment(endDate).subtract(1, "years").format("YYYY-MM-DD")
       console.log(moment(startDateMoment, "YYYY/MM/DD").year());
      console.log(startDateMoment);
      console.log(endDateMoment);
-
       this.previousYearOrNot =
         this.startYearMonth +
         " " +
@@ -327,49 +354,45 @@ export default {
         this.endYearMonth +
         " " +
         moment(endDateMoment, "YYYY/MM/DD").year();
-      var startDateStepsIsoMonth = moment(startDateMoment, "YYYY/MM/DD").month() + 1;
+      var startdatesteps = moment(startDateMoment, "YYYY/MM/DD").month() + 1;
+      var startDateStepsIsoMonth = ('0' + startdatesteps).slice(-2)
       console.log(startDateStepsIsoMonth);
       var startDateStepsIsoYear = moment(startDateMoment, "YYYY/MM/DD").year();
       console.log(startDateStepsIsoYear);
-      var endDateStepsIsoMonth = moment(endDateMoment, "YYYY/MM/DD").month() + 1;
+      var enddatesteps = moment(endDateMoment, "YYYY/MM/DD").month() + 1;
+      var endDateStepsIsoMonth = ('0' + enddatesteps).slice(-2)
       console.log(endDateStepsIsoMonth);
       var endDateStepsIsoYear = moment(endDateMoment, "YYYY/MM/DD").year();
       console.log(endDateStepsIsoYear);
-
       var startDateFinal =
-        this.minTwoDigits(startDateStepsIsoYear) +
+      startDateStepsIsoYear +
         "-" +
-        this.minTwoDigits(startDateStepsIsoMonth) +
+        startDateStepsIsoMonth +
         "-01T00:00:00.000";
+        console.log(startDateFinal);
       var endDateFinal =
-        this.minTwoDigits(endDateStepsIsoYear) +
+        endDateStepsIsoYear +
         "-" +
-        this.minTwoDigits(endDateStepsIsoMonth) +
+        endDateStepsIsoMonth +
         "-01T00:00:00.000";
+        console.log(endDateFinal);
       // filter the data ased on the newly created date strings
-
       var result = filterBeforeTime.filter(function(obj) {
         return obj.date >= startDateFinal && obj.date <= endDateFinal;
       });
-
+      console.log(result);
       // same process as before, getting the total sum for the future math
       var containerValue = [];
       for (var i = 0; i < result.length; i++) {
         containerValue.push(result[i].value);
       }
-
       var numberFy1 = containerValue.map(Number);
-
       const reducer = (accumulator, currentValue) => accumulator + currentValue;
-
       var totalValue = numberFy1.reduce(reducer);
-
       // a series of variables for extracting commas and numberfy string for if statement
       var totalNumberOld = this.totalNumber;
-
       var replaceCommas = totalNumberOld.replace(/,/g, "");
       var replacedCommas = Number(replaceCommas);
-
       // is the value an increase since the previous years or not?
       if (replacedCommas > totalValue) {
         this.increaseOrDecrease = "increase";
@@ -379,7 +402,6 @@ export default {
       }
       // this is where the math happens
       var percentChange = ((totalValue - totalOldValue) / totalValue) * 100;
-
       // rounding the very long number
       var percentChangeNew = function money_round(num) {
         //
@@ -419,11 +441,14 @@ export default {
       selectedStartYear,
       selectedStartMonth
     ) {
+      console.log(selectedEndYear);
+      console.log(selectedEndMonth);
+      console.log(selectedStartYear);
+      console.log(selectedStartMonth);
       // this method is first, fetching data by dynamically inserting dates subtracted by one into the query to get enough json for the percent change function
-
       // subtracting start year by one for query
       var startYearSubtracted = Number(selectedStartYear) - 1;
-
+      console.log(startYearSubtracted);
       // function for getting month name for dom
       var month_name = function(dt) {
         var mlist = [
@@ -442,11 +467,11 @@ export default {
         ];
         return mlist[dt.getMonth()];
       };
+
       // created dates for enddate bigger than startdate "filter"
       this.startYearMonth = month_name(
         new Date(selectedStartMonth + "/01/" + selectedStartYear)
       );
-
       this.endYearMonth = month_name(
         new Date(selectedEndMonth + "/01/" + selectedEndYear)
       );
@@ -457,7 +482,6 @@ export default {
           "Please ensure that the End Date is greater than or equal to the Start Date."
         );
       }
-
       // fetching data
       // limit is set to the max because i want to get ALL json from the time periods
       axios
@@ -475,21 +499,17 @@ export default {
         .then(response => {
           // getting the response
           var reaction = response.data;
-
           // filtering the data down to only us-mexico
           var defaultData = reaction.filter(function(item) {
             return "US-Mexico Border".includes(item.border);
           });
-
           this.defaultData = defaultData;
-
           var defaultDataToCali = this.defaultData;
           // filtering data down to only california (this set of data will be used on default)
           var caliData = defaultDataToCali.filter(function(item) {
             return "CA".includes(item.state);
           });
           this.californiaData = caliData;
-
           // this reduces time as the method is only filtering what is neccesary
           if (this.selectedArea == ["California"]) {
             this.pipeData(caliData);
@@ -500,7 +520,6 @@ export default {
         });
     }
   },
-
   created() {
     // this is on page load
     axios
@@ -517,7 +536,6 @@ export default {
         //   )
         var max = null;
         var min = null;
-
         for (var j = 0; j < reactione.length; j++) {
           var current = reactione[j];
           if (max === null || current.source > max.source) {
@@ -530,7 +548,6 @@ export default {
        //console.log(max.date);
         var day = moment(max.date);
         // moment(item.date,"YYYY/MM/DD").year()
-
         // var newDate = maxDate.setHours( maxDate.getHours() + 8 );
         //  //console.log(newDate);
         ////console.log(maxDate.getTime());
@@ -540,25 +557,26 @@ export default {
         var caliData = reactione.filter(function(item) {
           return "CA".includes(item.state);
         });
-
         // subtract the years
         var selectedEndYear = moment(day, "YYYY/MM/DD").year();
-       //console.log(selectedEndYear);
+       console.log(selectedEndYear);
         var selectedEndMonth = moment(day, "YYYY/MM/DD").month() + 1;
-       //console.log(selectedEndMonth);
+       console.log(selectedEndMonth);
         var selectedStartMonth = moment(day, "YYYY/MM/DD").month() + 1;
         var selectedStartYear = moment(day, "YYYY/MM/DD").year() - 1;
+        this.selectedEndYear = selectedEndYear
+        this.selectedEndMonth =  ('0' + selectedEndMonth).slice(-2)
+        console.log(selectedStartMonth);
+        this.selectedStartMonth = ('0' + selectedStartMonth).slice(-2)
+  this.selectedStartYear  = selectedStartYear
         var data = [];
         // loop until the dynamic year
         for (var i = selectedEndYear; i >= 1996; i--) {
           data.push(i);
         }
-
         // insert array of year
         this.dynamicYear = data;
-
         // call the axios method
-
         // set empty arrays
         var containerPort = [];
         var containerMeasure = [];
@@ -590,7 +608,6 @@ export default {
   },
   watch: {
     // event listener for when any selected array changes
-
     // had problems because the listener would trigger on mounted so lots of code preventing trigger on mounted
     selectedArea: function() {
       if (this.selectedArea == "California") {
@@ -606,7 +623,6 @@ export default {
         this.selectedStartMonth
       );
     },
-
     selectedEndYear: function() {
       this.getDataAxios(
         this.selectedEndYear,
@@ -639,12 +655,9 @@ export default {
         this.selectedStartMonth
       );
     },
-
     selectedOptionsForMeasure: function() {
       var booboo = this.optionsForMeasure;
-
       var gaagaa = this.selectedOptionsForMeasure;
-
       if (gaagaa.length == booboo.length && this.hasBeenCreated) {
        console.log("the query options have not been touched");
       }
@@ -658,7 +671,6 @@ export default {
       }
       if (gaagaa.length != booboo.length) {
         this.hasBeenCreated = false;
-
         if (this.selectedArea == "California") {
           this.pipeData(this.californiaData);
         }
@@ -669,9 +681,7 @@ export default {
     },
     selectedOptionsForPorts: function() {
       var booboo = this.optionsForPorts;
-
       var gaagaa = this.selectedOptionsForPorts;
-
       if (gaagaa.length == booboo.length && this.hasBeenCreated) {
        console.log("the query options have not been touched");
       }
@@ -685,7 +695,6 @@ export default {
       }
       if (gaagaa.length != booboo.length) {
         this.hasBeenCreated = false;
-
         if (this.selectedArea == "California") {
           this.pipeData(this.californiaData);
         }
@@ -705,11 +714,9 @@ ul {
   list-style-type: none;
   padding: 0;
 }
-
 h1 {
   margin: 0 0 0.25em;
 }
-
 h2 {
   display: inline-block;
   white-space: nowrap;
@@ -735,7 +742,6 @@ html {
   background-position: center;
   background-size: cover;
 }
-
 .leftBottom {
   transform: translate(-25%, -25%);
   position: absolute;
@@ -748,7 +754,6 @@ html {
   top: 20%;
   left: 50%;
 }
-
 .fourth {
   border-color: #f49278;
   color: #fff;
@@ -761,7 +766,6 @@ html {
 .fourth:hover {
   background-position: 0;
 }
-
 .expand {
   width: 100%;
   height: 100%;
@@ -815,7 +819,6 @@ html {
   background-color: #fff;
   padding: 10px;
 }
-
 .grid-item-startmonth {
   grid-row-start: 2;
   grid-row-end: 3;
@@ -892,3 +895,15 @@ label {
   padding-bottom: 30px;
 }
 </style>
+© 2020 GitHub, Inc.
+Terms
+Privacy
+Security
+Status
+Help
+Contact GitHub
+Pricing
+API
+Training
+Blog
+About
