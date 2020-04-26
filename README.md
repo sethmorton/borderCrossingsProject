@@ -1,4 +1,4 @@
-# fuckyoudad
+# Border Dashboard
 
 ## Project setup
 ```
