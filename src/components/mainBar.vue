@@ -173,6 +173,7 @@ borderCrossingsProject/src/components/mainBar.vue
           from border crossings between
           <span ref="app" style="color: black">{{ previousYearOrNot }}</span>
         </h1>
+        <h5 class="w3-center " style="color: black; font-size: 0.7rem">Data from BTS</h5>
       </div>
     </div>
   </div>
@@ -722,7 +723,7 @@ h2 {
   white-space: nowrap;
 }
 body,
-h1 {
+h1,h5 {
   font-family: "Raleway", sans-serif;
   color: gray;
 }
