@@ -193,7 +193,7 @@ export default {
       defaultData: [],
       californiaData: [],
       selectedArea: "California",
-      optionsForArea: ["California", "USA-Mexico"],
+      optionsForArea: ["California Border", "Entire USA-Mexico border"],
       selectedOptionsForPorts: [],
       optionsForPorts: [],
       selectedOptionsForMeasure: [],
