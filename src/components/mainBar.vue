@@ -25,12 +25,12 @@ borderCrossingsProject/src/components/mainBar.vue
       <div class="centerTop">
         <h1 class="w3-xxlarge w3-animate-top" style="color: brown ">
           Total border crossings in
-          <span style="color: black">{{ selectedArea }}</span> from
-          <span style="color: black">{{ startYearMonth }} </span>
+          <span style="color: black">{{ SelectedArea }}</span> from
+          <span style="color: black">{{ StartMonthWord }} </span>
 
-          <span style="color: black">{{ selectedStartYear }}</span> to
-          <span style="color: black">{{ endYearMonth }} </span>
-          <span style="color: black">{{ selectedEndYear }}:</span>
+          <span style="color: black">{{ StartYear }}</span> to
+          <span style="color: black">{{ EndMonthWord }} </span>
+          <span style="color: black">{{ EndYear }}:</span>
         </h1>
       </div>
       <div class="leftBottom">
@@ -51,25 +51,25 @@ borderCrossingsProject/src/components/mainBar.vue
             <div class="w3-display-container grid-container ">
               <div class="grid-item-startmonth">
                 <div style="text-align: left" class="select">
-                  <select name="slct" v-model="selectedStartMonth" id="slct">
+                  <select name="slct" v-model="StartMonth" id="slct">
                     <option selected disabled>Start Month</option>
                     <option
-                      v-for="choice in dataNonDynamicMonth"
-                      :key="choice"
-                      :value="choice"
-                      >{{ choice }}</option
+                      v-for="x in NonDynMonth"
+                      :key="x"
+                      :value="x"
+                      >{{ x }}</option
                     >
                   </select>
                 </div>
 
                 <div style="text-align: left; padding-top: 10px" class="select">
-                  <select name="slct" v-model="selectedStartYear" id="slct">
+                  <select name="slct" v-model="StartYear" id="slct">
                     <option selected disabled>Start Year</option>
                     <option
-                      v-for="choice in dynamicYear"
-                      :key="choice"
-                      :value="choice"
-                      >{{ choice }}</option
+                      v-for="x in DynYear"
+                      :key="x"
+                      :value="x"
+                      >{{ x }}</option
                     >
                   </select>
                 </div>
@@ -79,25 +79,25 @@ borderCrossingsProject/src/components/mainBar.vue
               </div>
               <div class="grid-item-endmonth">
                 <div style="text-align: left" class="select">
-                  <select name="slct" v-model="selectedEndMonth" id="slct">
+                  <select name="slct" v-model="EndMonth" id="slct">
                     <option selected disabled>End Month</option>
                     <option
-                      v-for="choice in dataNonDynamicMonth"
-                      :key="choice"
-                      :value="choice"
-                      >{{ choice }}</option
+                      v-for="x in NonDynMonth"
+                      :key="x"
+                      :value="x"
+                      >{{ x }}</option
                     >
                   </select>
                 </div>
 
                 <div style="text-align: left; padding-top: 10px" class="select">
-                  <select name="slct" v-model="selectedEndYear" id="slct">
-                    <option selected disabled>Ennd Year</option>
+                  <select name="slct" v-model="EndYear" id="slct">
+                    <option selected disabled>End Year</option>
                     <option
-                      v-for="choice in dynamicYear"
-                      :key="choice"
-                      :value="choice"
-                      >{{ choice }}</option
+                      v-for="x in DynYear"
+                      :key="x"
+                      :value="x"
+                      >{{ x }}</option
                     >
                   </select>
                 </div>
@@ -107,52 +107,52 @@ borderCrossingsProject/src/components/mainBar.vue
               </div>
               <div class="ports-grid">
                 <h2 style="text-align: left">Ports</h2>
-                <div class="" :key="choice" v-for="choice in optionsForPorts">
+                <div class="" :key="x" v-for="x in OptionsPorts">
                   <label class="checkbox-label">
                     <input
                       class=""
                       type="checkbox"
                       checked=""
-                      v-bind:id="choice"
-                      v-bind:value="choice"
-                      v-model="selectedOptionsForPorts"
+                      v-bind:id="x"
+                      v-bind:value="x"
+                      v-model="SelecPorts"
                     />
 
-                    {{ choice }}</label
+                    {{ x }}</label
                   ><br />
                 </div>
               </div>
               <div class="measures-grid">
                 <h2 style="text-align: left">Measure</h2>
-                <div class="" :key="choice" v-for="choice in optionsForMeasure">
+                <div class="" :key="x" v-for="x in OptionsMeasure">
                   <label class="checkbox-label">
                     <input
                       class=""
                       type="checkbox"
                       checked=""
-                      v-bind:id="choice"
-                      v-bind:value="choice"
-                      v-model="selectedOptionsForMeasure"
+                      v-bind:id="x"
+                      v-bind:value="x"
+                      v-model="SelecMeasures"
                     />
 
-                    {{ choice }}</label
+                    {{ x }}</label
                   ><br />
                 </div>
               </div>
               <div class="selected-area-grid">
                 <h2>Area</h2>
-                <div class="" :key="choice" v-for="choice in optionsForArea">
+                <div class="" :key="x" v-for="x in OptionsArea">
                   <label class="checkbox-label">
                     <input
                       class=""
                       type="radio"
                       checked=""
-                      v-bind:id="choice"
-                      v-bind:value="choice"
-                      v-model="selectedArea"
+                      v-bind:id="x"
+                      v-bind:value="x"
+                      v-model="SelectedArea"
                     />
 
-                    {{ choice }}</label
+                    {{ x }}</label
                   ><br />
                 </div>
               </div>
@@ -163,15 +163,15 @@ borderCrossingsProject/src/components/mainBar.vue
       <!-- Another container -->
       <div class="w3-display-middle">
         <h1 class="w3-jumbo w3-animate-top w3-center" style="color: black">
-          {{ totalNumber }}
+          {{ Sum }}
         </h1>
         <hr class="w3-border-grey" style="margin:auto;width:40%" />
         <h1 style="color: brown; font-size: 1.5rem;" class=" w3-center">
           A
-          <span style="color: black"> {{ percentChangeForDom }}%</span>
-          <span style="color: black"> {{ increaseOrDecrease }}</span>
+          <span style="color: black"> {{ PercDiff }}%</span>
+          <span style="color: black"> {{ InOrDe }}</span>
           from border crossings between
-          <span ref="app" style="color: black">{{ previousYearOrNot }}</span>
+          <span ref="app" style="color: black">{{ StartMonthWord + " " + (StartYear -1) + " to " + EndMonthWord + " " + (EndYear -1)  }}</span>
         </h1>
         <h5 class="w3-center " style="color: black; font-size: 0.7rem">Data from BTS</h5>
       </div>
@@ -184,525 +184,163 @@ borderCrossingsProject/src/components/mainBar.vue
 import axios from "axios";
 import moment from "moment";
 export default {
-  // asign name for app.vue
-  name: "mainBar",
-  // every global variable
-  data() {
+  data: function () {
     return {
-      isHidden: true,
-      defaultData: [],
-      californiaData: [],
-      selectedArea: "California",
-      optionsForArea: ["California Border", "Entire USA-Mexico border"],
-      selectedOptionsForPorts: [],
-      optionsForPorts: [],
-      selectedOptionsForMeasure: [],
-      optionsForMeasure: [],
-      optionsStartSelect: [],
-      optionsEndSelect: [],
-      selectedStartSelect: "2019-11-01T00:00:00.000",
-      selectedEndSelect: "2019-12-01T00:00:00.000",
-      totalNumber: "",
-      dateForPageEnd: "",
-      percentChangeForDom: "",
-      dynamicYear: [],
-      dataNonDynamicMonth: [
-        "12",
-        "11",
-        "10",
-        "09",
-        "08",
-        "07",
-        "06",
-        "05",
-        "04",
-        "03",
-        "02",
-        "01"
-      ],
-      selectedStartYear: "2018",
-      selectedStartMonth: "12",
-      selectedEndYear: "2019",
-      selectedEndMonth: "12",
-      unpipedTime: [],
-      previousYearOrNot: "",
-      startYearMonth: "",
-      endYearMonth: "",
-      increaseOrDecrease: "",
-      hasBeenCreated: null
-    };
+      EndYear : "",
+      EndMonth : "",
+      StartYear : "",
+      StartMonth : "",
+      SelecPorts : [],
+      SelecMeasures : [],
+      OptionsPorts : [],
+      OptionsMeasure : [],
+      CaliData : true,
+      SelectedArea : "California",
+      OptionsArea : ["California", "Entire US-Mexico Border"],
+      DynYear : [],
+      NonDynMonth : ["1","2","3","4","5","6","7","8","9","10","11","12"],
+      Sum : "",
+      PercDiff : "",
+      InOrDe : "",
+      hasBeenTouched : false,
+      StartMonthWord : "",
+      EndMonthWord : "",
+    }
   },
-  // methods
   methods: {
-    // set the query options
-    setGetCheckBoxes: function(data) {
-      // set empty arrays
-      var containerPort = [];
-      var containerMeasure = [];
-      var containerTime = [];
-      // for loop unique arrays
-      for (let i = 0; i < data.length; i++) {
-        containerPort.push(data[i].port_name);
-        containerMeasure.push(data[i].measure);
-        containerTime.push(data[i].date);
-      }
-      // uniqueArrays for checkboxes, selects, and radios
-      var uniquePort = [...new Set(containerPort)];
-      var uniqueMeasure = [...new Set(containerMeasure)];
-      var uniqueTime = [...new Set(containerTime)];
-      this.optionsStartSelect = uniqueTime;
-      this.optionsEndSelect = uniqueTime;
-      this.optionsForPorts = uniquePort;
-      this.selectedOptionsForPorts = uniquePort;
-      this.optionsForMeasure = uniqueMeasure;
-      this.selectedOptionsForMeasure = uniqueMeasure;
-    },
-    // pipe the json for selected ports, selected measures
-    pipeData: function(data) {
-      console.log(data);
-      var selectedOptionsForPorts = this.selectedOptionsForPorts;
-      var filterOutput1 = data.filter(function(item) {
-        return selectedOptionsForPorts.includes(item.port_name);
-      });
-      var selectedOptionsForMeasure = this.selectedOptionsForMeasure;
-      var unpipedTime = filterOutput1.filter(function(item) {
-        return selectedOptionsForMeasure.includes(item.measure);
-      });
-      this.unpipedTime = unpipedTime;
-      // pass the filtered data into the time dates "getter"
-      this.getTimeDates(this.unpipedTime);
-    },
-    // filter for selected time
-    getTimeDates: function(unpipedTime) {
+    returnTimeQueriedData: function () {
+      if(new Date(this.StartYear, this.StartMonth, 1) > new Date(this.EndYear, this.EndMonth, 1)){alert("INVALID DATE")}
 
-        var selectedEndMonth = ('0' + this.selectedEndMonth).slice(-2)
-      console.log(selectedEndMonth);
-      var selectedStartMonth = ('0' + this.selectedStartMonth).slice(-2)
-      console.log(selectedStartMonth);
-
-      this.selectedEndSelect =
-        this.selectedEndYear + "-" + selectedEndMonth + "-01T00:00:00.000";
-      var endDate = this.selectedEndSelect;
-      console.log(endDate);
-      this.selectedStartSelect =
-        this.selectedStartYear +
-        "-" +
-        selectedStartMonth +
-        "-01T00:00:00.000";
-      var startDate = this.selectedStartSelect;
-      this.pipeOriginalTimeData(startDate, endDate, unpipedTime);
-    },
-    // pass the filtered data and the time dates
-    pipeOriginalTimeData(startDate, endDate, unpipedTime) {
-
-      var pipedTime = unpipedTime.filter(function(obj) {
-        return obj.date >= startDate && obj.date <= endDate;
-      });
-      console.log(pipedTime);
-
-      // pass the filtered data into the percent function
-      this.getNumbers(pipedTime, unpipedTime);
-    },
-    // get the total number
-    getNumbers: function(pipedTime, unpipedTime) {
-      console.log(pipedTime);
-      // set empty array for sum
-      var containerValue = [];
-      for (var i = 0; i < pipedTime.length; i++) {
-        containerValue.push(pipedTime[i].value);
-      }
-      // convert strings to numbers with map functions
-      var numberFy = containerValue.map(Number);
-      const reducer = (accumulator, currentValue) => accumulator + currentValue;
-      // reduce (sum) the array
-      var totalValue = numberFy.reduce(reducer);
-      totalValue.toLocaleString();
-      // format number method for insertion of commas
-      var forComma = this.formatNumber(totalValue);
-      // reset container value for next watch
-      containerValue.length = 0;
-      this.totalNumber = forComma;
-      // get percent change
-      this.percentChange(totalValue, pipedTime, unpipedTime);
-    },
-    // comma method
-    formatNumber: function(num) {
-      return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
-    },
-    // percentChange method to get percentchange for the years - 1 of the original time filter year
-    percentChange: function(totalOldValue, pipedTime, filterBeforeTime) {
-      console.log(filterBeforeTime);
-      // set dates and subtract a year off of them
-      // var endSelected = this.selectedEndSelect;
-      // console.log(this.selectedEndSelect);
-      //
-      // var startSelected = this.selectedStartSelect;
-      console.log(this.selectedEndSelect);
-      var endDate = moment(this.selectedEndSelect)
-      console.log(endDate);
-      var startDate = moment(this.selectedStartSelect);
-      var startDateMoment = moment(startDate).subtract(1, "years").format("YYYY-MM-DD")
-      console.log(startDateMoment);
-      var endDateMoment = moment(endDate).subtract(1, "years").format("YYYY-MM-DD")
-      console.log(moment(startDateMoment, "YYYY/MM/DD").year());
-     console.log(startDateMoment);
-     console.log(endDateMoment);
-      this.previousYearOrNot =
-        this.startYearMonth +
-        " " +
-        moment(startDateMoment, "YYYY/MM/DD").year() +
-        " to " +
-        this.endYearMonth +
-        " " +
-        moment(endDateMoment, "YYYY/MM/DD").year();
-      var startdatesteps = moment(startDateMoment, "YYYY/MM/DD").month() + 1;
-      var startDateStepsIsoMonth = ('0' + startdatesteps).slice(-2)
-      console.log(startDateStepsIsoMonth);
-      var startDateStepsIsoYear = moment(startDateMoment, "YYYY/MM/DD").year();
-      console.log(startDateStepsIsoYear);
-      var enddatesteps = moment(endDateMoment, "YYYY/MM/DD").month() + 1;
-      var endDateStepsIsoMonth = ('0' + enddatesteps).slice(-2)
-      console.log(endDateStepsIsoMonth);
-      var endDateStepsIsoYear = moment(endDateMoment, "YYYY/MM/DD").year();
-      console.log(endDateStepsIsoYear);
-      var startDateFinal =
-      startDateStepsIsoYear +
-        "-" +
-        startDateStepsIsoMonth +
-        "-01T00:00:00.000";
-        console.log(startDateFinal);
-      var endDateFinal =
-        endDateStepsIsoYear +
-        "-" +
-        endDateStepsIsoMonth +
-        "-01T00:00:00.000";
-        console.log(endDateFinal);
-      // filter the data ased on the newly created date strings
-      var result = filterBeforeTime.filter(function(obj) {
-        return obj.date >= startDateFinal && obj.date <= endDateFinal;
-      });
-      console.log(result);
-      // same process as before, getting the total sum for the future math
-      var containerValue = [];
-      for (var i = 0; i < result.length; i++) {
-        containerValue.push(result[i].value);
-      }
-      var numberFy1 = containerValue.map(Number);
-      const reducer = (accumulator, currentValue) => accumulator + currentValue;
-      var totalValue = numberFy1.reduce(reducer);
-      // a series of variables for extracting commas and numberfy string for if statement
-      var totalNumberOld = this.totalNumber;
-      var replaceCommas = totalNumberOld.replace(/,/g, "");
-      var replacedCommas = Number(replaceCommas);
-      // is the value an increase since the previous years or not?
-      if (replacedCommas > totalValue) {
-        this.increaseOrDecrease = "increase";
-      }
-      if (replacedCommas < totalValue) {
-        this.increaseOrDecrease = "decrease";
-      }
-      // this is where the math happens
-      var percentChange = ((totalValue - totalOldValue) / totalValue) * 100;
-      // rounding the very long number
-      var percentChangeNew = function money_round(num) {
-        //
-        return Math.ceil(num * 100) / 100;
-      };
-      var forAbsolute = percentChangeNew(percentChange);
-      // setting the global variable as the rounded percent change
-      this.percentChangeForDom = Math.abs(forAbsolute);
-    },
-    getNewQueryOptions: function(data) {
-      var containerPort = [];
-      var containerMeasure = [];
-      var containerTime = [];
-      // for loop unique arrays
-      for (let i = 0; i < data.length; i++) {
-        containerPort.push(data[i].port_name);
-        containerMeasure.push(data[i].measure);
-        containerTime.push(data[i].date);
-      }
-      // uniqueArrays for checkboxes, selects, and radios
-      var uniquePort = [...new Set(containerPort)];
-      var uniqueMeasure = [...new Set(containerMeasure)];
-      var uniqueTime = [...new Set(containerTime)];
-      this.optionsStartSelect = uniqueTime;
-      this.optionsEndSelect = uniqueTime;
-      this.optionsForPorts = uniquePort;
-      this.selectedOptionsForPorts = uniquePort;
-      this.optionsForMeasure = uniqueMeasure;
-      this.selectedOptionsForMeasure = uniqueMeasure;
-    },
-    minTwoDigits: function(n) {
-      return (n < 10 ? "0" : "") + n;
-    },
-    getDataAxios: function(
-      selectedEndYear,
-      selectedEndMonth,
-      selectedStartYear,
-      selectedStartMonth
-    ) {
-      console.log(selectedEndYear);
-      console.log(selectedEndMonth);
-      console.log(selectedStartYear);
-      console.log(selectedStartMonth);
-      // this method is first, fetching data by dynamically inserting dates subtracted by one into the query to get enough json for the percent change function
-      // subtracting start year by one for query
-      var startYearSubtracted = Number(selectedStartYear) - 1;
-      console.log(startYearSubtracted);
-      // function for getting month name for dom
-      var month_name = function(dt) {
-        var mlist = [
-          "Jan.",
-          "Feb.",
-          "Mar.",
-          "Apr.",
-          "May",
-          "Jun.",
-          "Jul.",
-          "Aug.",
-          "Sep.",
-          "Oct.",
-          "Nov.",
-          "Dec."
-        ];
-        return mlist[dt.getMonth()];
-      };
-
-      // created dates for enddate bigger than startdate "filter"
-      this.startYearMonth = month_name(
-        new Date(selectedStartMonth + "/01/" + selectedStartYear)
-      );
-      this.endYearMonth = month_name(
-        new Date(selectedEndMonth + "/01/" + selectedEndYear)
-      );
-      var startDate = new Date(selectedStartMonth + "/01/" + selectedStartYear);
-      var endDate = new Date(selectedEndMonth + "/01/" + selectedEndYear);
-      if (startDate > endDate) {
-        alert(
-          "Please ensure that the End Date is greater than or equal to the Start Date."
-        );
-      }
-      // fetching data
-      // limit is set to the max because i want to get ALL json from the time periods
+      var StartYearForQuery = this.StartYear - 1;
+      if (this.CaliData){var CheckCali = "&state=CA"}else{var CheckCali = ''}
       axios
         .get(
           "https://data.transportation.gov/resource/keg4-3bc2.json?$limit=100000&$where=date between '" +
-            startYearSubtracted +
+            StartYearForQuery +
             "-" +
-            selectedStartMonth +
+            this.StartMonth  +
             "-01' and '" +
-            selectedEndYear +
+            this.EndYear +
             "-" +
-            selectedEndMonth +
-            "-01'"
+            this.StartMonth +
+            "-01'&border=US-Mexico Border" +
+            CheckCali
         )
         .then(response => {
-          // getting the response
-          var reaction = response.data;
-          // filtering the data down to only us-mexico
-          var defaultData = reaction.filter(function(item) {
-            return "US-Mexico Border".includes(item.border);
-          });
-          this.defaultData = defaultData;
-          var defaultDataToCali = this.defaultData;
-          // filtering data down to only california (this set of data will be used on default)
-          var caliData = defaultDataToCali.filter(function(item) {
-            return "CA".includes(item.state);
-          });
-          this.californiaData = caliData;
-          // this reduces time as the method is only filtering what is neccesary
-          if (this.selectedArea == ["California"]) {
-            this.pipeData(caliData);
-          }
-          if (this.selectedArea == ["USA-Mexico"]) {
-            this.pipeData(defaultData);
-          }
-        });
+          var Data = response.data
+          var Ports = Data.map(x => x.port_name)
+          var UniquePorts = [... new Set(Ports)]
+          var Measure = Data.map(x => x.measure)
+          var UniqueMeasure = [... new Set(Measure)]
+          this.OptionsPorts = UniquePorts
+          this.OptionsMeasure = UniqueMeasure
+          this.getSum(Data)
+        })
+    },
+    getSum: function (Data) {
+
+      var SelecMeasures = this.SelecMeasures
+      var SelecPorts = this.SelecPorts
+      var PipePort = Data.filter((x) => SelecPorts.includes(x.port_name))
+      var PipeMeasure = PipePort.filter((x) => SelecMeasures.includes(x.measure))
+      var StringCreationEndDate = this.EndYear + "-" + ('0' + this.EndMonth).slice(-2) + "-01T00:00:00.000"
+      var StringCreationStartDate = this.StartYear + "-" + ('0' + this.StartMonth).slice(-2) + "-01T00:00:00.000"
+      var StringCreationEndDateMinusOne = (this.EndYear - 1) + "-" + ('0' + this.EndMonth).slice(-2) + "-01T00:00:00.000"
+      var StringCreationStartDateMinusOne = (this.StartYear - 1) + "-" + ('0' + this.StartMonth).slice(-2) + "-01T00:00:00.000"
+
+      var FullPipedData = PipeMeasure.filter((x) => x.date >= StringCreationStartDate && x.date <= StringCreationEndDate)
+      var FullPipedDataSubtracted = PipeMeasure.filter((x) => x.date >= StringCreationStartDateMinusOne && x.date <= StringCreationEndDateMinusOne)
+      var DataVal = []
+      for (let i = 0; i < FullPipedData.length; i++) {
+        DataVal.push(FullPipedData[i].value)
+      }
+      var Sum = DataVal.map(Number).reduce((a,b) => a + b)
+      var SubtractedDataVal = []
+      for (let i = 0; i < FullPipedDataSubtracted.length; i++) {
+        SubtractedDataVal.push(FullPipedDataSubtracted[i].value)
+      }
+      var SumForPercent = SubtractedDataVal.map(Number).reduce((a,b) => a + b)
+      var PercDiff = Math.ceil((((Sum - SumForPercent) /  Sum) * 100) * 100) / 100
+      var InOrDe = (Sum > SumForPercent) ? "increase" : "decrease";
+      this.Sum = Sum
+      this.PercDiff = PercDiff
+      this.InOrDe = InOrDe
+      var StartMonth = (this.StartMonth -1)
+      var EndMonth = (this.EndMonth -1)
+      this.EndMonthWord = moment().month(+EndMonth).format("MMMM");
+      this.StartMonthWord = moment().month(+StartMonth).format("MMMM");
+
+
     }
   },
-  created() {
-    // this is on page load
-    axios
-      .get("https://data.transportation.gov/resource/keg4-3bc2.json?")
-      .then(response => {
-        var reactione = response.data;
-        // get max date possible for query
-        // var maxDate =
-        //   Math.max.apply(
-        //     null,
-        //     reactione.map(function(e) {
-        //       return e.date;
-        //     })
-        //   )
-        var max = null;
-        var min = null;
-        for (var j = 0; j < reactione.length; j++) {
-          var current = reactione[j];
-          if (max === null || current.source > max.source) {
-            max = current;
-          }
-          if (min === null || current.source < min.source) {
-            min = current;
-          }
-        }
-       //console.log(max.date);
-        var day = moment(max.date);
-        // moment(item.date,"YYYY/MM/DD").year()
-        // var newDate = maxDate.setHours( maxDate.getHours() + 8 );
-        //  //console.log(newDate);
-        ////console.log(maxDate.getTime());
-        // // var maxDateForSafari = maxDate.toUTCString();
-        // var newDate = new Date(maxDate.getTime());
-        ////console.log(newDate);
-        var caliData = reactione.filter(function(item) {
-          return "CA".includes(item.state);
-        });
-        // subtract the years
-        var selectedEndYear = moment(day, "YYYY/MM/DD").year();
-       console.log(selectedEndYear);
-        var selectedEndMonth = moment(day, "YYYY/MM/DD").month() + 1;
-       console.log(selectedEndMonth);
-        var selectedStartMonth = moment(day, "YYYY/MM/DD").month() + 1;
-        var selectedStartYear = moment(day, "YYYY/MM/DD").year() - 1;
-        this.selectedEndYear = selectedEndYear
-        this.selectedEndMonth =  ('0' + selectedEndMonth).slice(-2)
-        console.log(selectedStartMonth);
-        this.selectedStartMonth = ('0' + selectedStartMonth).slice(-2)
-  this.selectedStartYear  = selectedStartYear
-        var data = [];
-        // loop until the dynamic year
-        for (var i = selectedEndYear; i >= 1996; i--) {
-          data.push(i);
-        }
-        // insert array of year
-        this.dynamicYear = data;
-        // call the axios method
-        // set empty arrays
-        var containerPort = [];
-        var containerMeasure = [];
-        var containerTime = [];
-        // for loop unique arrays
-        for (let i = 0; i < caliData.length; i++) {
-          containerPort.push(caliData[i].port_name);
-          containerMeasure.push(caliData[i].measure);
-          containerTime.push(caliData[i].date);
-        }
-        // uniqueArrays for checkboxes, selects, and radios
-        var uniquePort = [...new Set(containerPort)];
-        var uniqueMeasure = [...new Set(containerMeasure)];
-        var uniqueTime = [...new Set(containerTime)];
-        this.optionsStartSelect = uniqueTime;
-        this.optionsEndSelect = uniqueTime;
-        this.optionsForPorts = uniquePort;
-        this.selectedOptionsForPorts = uniquePort;
-        this.optionsForMeasure = uniqueMeasure;
-        this.selectedOptionsForMeasure = uniqueMeasure;
-        this.hasBeenCreated = true;
-        this.getDataAxios(
-          selectedEndYear,
-          selectedEndMonth,
-          selectedStartYear,
-          selectedStartMonth
-        );
-      });
+  mounted: function () {
+    axios.get("https://data.bts.gov/id/keg4-3bc2.json?border=US-Mexico%20Border").then(DataBackForMax => {
+      var IniData = DataBackForMax.data
+      var FilterMaxDate = new Date(Math.max.apply(null, IniData.map((x) =>  new Date(x.date))));
+      var EndYear = moment(Date.parse(FilterMaxDate)).year()
+      var EndMonth = moment(Date.parse(FilterMaxDate)).month() + 1
+      var StartYear = EndYear - 1
+      var StartMonth = EndMonth
+      this.EndYear = EndYear
+      this.EndMonth = EndMonth
+      this.StartYear = StartYear
+      this.StartMonth = StartMonth
+      var Ports = IniData.map(x => x.port_name)
+      var UniquePorts = [... new Set(Ports)]
+      var Measure = IniData.map(x => x.measure)
+      var UniqueMeasure = [... new Set(Measure)]
+      var YearsArray = []
+      for (let i = EndYear; i > 1996; i--) {
+        YearsArray.push(i)
+      }
+      this.OptionsPorts = UniquePorts
+      this.OptionsMeasure = UniqueMeasure
+      this.SelecPorts = UniquePorts
+      this.SelecMeasures = UniqueMeasure
+      this.DynYear = YearsArray
+      this.returnTimeQueriedData()
+    })
   },
   watch: {
-    // event listener for when any selected array changes
-    // had problems because the listener would trigger on mounted so lots of code preventing trigger on mounted
-    selectedArea: function() {
-      if (this.selectedArea == "California") {
-        this.getNewQueryOptions(this.californiaData);
+    SelecPorts: function () {
+      if(this.SelecPorts.length != this.OptionsPorts.length){
+        this.hasBeenTouched = true
       }
-      if (this.selectedArea == "USA-Mexico") {
-        this.getNewQueryOptions(this.defaultData);
-      }
-      this.getDataAxios(
-        this.selectedEndYear,
-        this.selectedEndMonth,
-        this.selectedStartYear,
-        this.selectedStartMonth
-      );
-    },
-    selectedEndYear: function() {
-      this.getDataAxios(
-        this.selectedEndYear,
-        this.selectedEndMonth,
-        this.selectedStartYear,
-        this.selectedStartMonth
-      );
-    },
-    selectedEndMonth: function() {
-      this.getDataAxios(
-        this.selectedEndYear,
-        this.selectedEndMonth,
-        this.selectedStartYear,
-        this.selectedStartMonth
-      );
-    },
-    selectedStartYear: function() {
-      this.getDataAxios(
-        this.selectedEndYear,
-        this.selectedEndMonth,
-        this.selectedStartYear,
-        this.selectedStartMonth
-      );
-    },
-    selectedStartMonth: function() {
-      this.getDataAxios(
-        this.selectedEndYear,
-        this.selectedEndMonth,
-        this.selectedStartYear,
-        this.selectedStartMonth
-      );
-    },
-    selectedOptionsForMeasure: function() {
-      var booboo = this.optionsForMeasure;
-      var gaagaa = this.selectedOptionsForMeasure;
-      if (gaagaa.length == booboo.length && this.hasBeenCreated) {
-       console.log("the query options have not been touched");
-      }
-      if (gaagaa.length == booboo.length && this.hasBeenCreated == false) {
-        if (this.selectedArea == "California") {
-          this.pipeData(this.californiaData);
-        }
-        if (this.selectedArea == "USA-Mexico") {
-          this.pipeData(this.defaultData);
-        }
-      }
-      if (gaagaa.length != booboo.length) {
-        this.hasBeenCreated = false;
-        if (this.selectedArea == "California") {
-          this.pipeData(this.californiaData);
-        }
-        if (this.selectedArea == "USA-Mexico") {
-          this.pipeData(this.defaultData);
-        }
+      if (this.hasBeenTouched) {
+        this.returnTimeQueriedData()
       }
     },
-    selectedOptionsForPorts: function() {
-      var booboo = this.optionsForPorts;
-      var gaagaa = this.selectedOptionsForPorts;
-      if (gaagaa.length == booboo.length && this.hasBeenCreated) {
-       console.log("the query options have not been touched");
+    SelecMeasures: function () {
+      if(this.SelecMeasures.length != this.OptionsMeasure.length){
+        this.hasBeenTouched = true
       }
-      if (gaagaa.length == booboo.length && this.hasBeenCreated == false) {
-        if (this.selectedArea == "California") {
-          this.pipeData(this.californiaData);
-        }
-        if (this.selectedArea == "USA-Mexico") {
-          this.pipeData(this.defaultData);
-        }
+      if (this.hasBeenTouched) {
+        this.returnTimeQueriedData()
       }
-      if (gaagaa.length != booboo.length) {
-        this.hasBeenCreated = false;
-        if (this.selectedArea == "California") {
-          this.pipeData(this.californiaData);
-        }
-        if (this.selectedArea == "USA-Mexico") {
-          this.pipeData(this.defaultData);
-        }
-      }
+    },
+    SelectedArea: function () {
+        this.CaliData = !this.CaliData
+        this.returnTimeQueriedData()
+    },
+    StartYear: function () {
+
+        this.returnTimeQueriedData()
+
+    },
+    StartMonth: function () {
+
+        this.returnTimeQueriedData()
+
+    },
+    EndYear: function () {
+
+        this.returnTimeQueriedData()
+
+    },
+    EndMonth: function () {
+
+        this.returnTimeQueriedData()
+
     }
   }
 };

@@ -1,0 +1,158 @@
+<div class="expand">
+  <!-- Set background size and image -->
+  <div class="bgimg w3-display-container w3-animate-opacity ">
+    <div class="centerTop">
+      <h1 class="w3-xxlarge w3-animate-top" style="color: brown ">
+        Total border crossings in
+        <span style="color: black">{{ selectedArea }}</span> from
+        <span style="color: black">{{ startYearMonth }} </span>
+
+        <span style="color: black">{{ selectedStartYear }}</span> to
+        <span style="color: black">{{ endYearMonth }} </span>
+        <span style="color: black">{{ selectedEndYear }}:</span>
+      </h1>
+    </div>
+    <div class="leftBottom">
+      <div>
+        <!-- Stylized button for modal -->
+        <b-button class="btn fourth" v-b-modal.modal-scrollable
+          >Options</b-button
+        >
+        <!-- Modal and Modal title -->
+        <b-modal
+          id="modal-scrollable"
+          size="sm"
+          scrollable
+          title="Options: Query Options"
+          description="query options"
+        >
+          <!-- Start of Query Options -->
+          <div class="w3-display-container grid-container ">
+            <div class="grid-item-startmonth">
+              <div style="text-align: left" class="select">
+                <select name="slct" v-model="selectedStartMonth" id="slct">
+                  <option selected disabled>Start Month</option>
+                  <option
+                    v-for="choice in dataNonDynamicMonth"
+                    :key="choice"
+                    :value="choice"
+                    >{{ choice }}</option
+                  >
+                </select>
+              </div>
+
+              <div style="text-align: left; padding-top: 10px" class="select">
+                <select name="slct" v-model="selectedStartYear" id="slct">
+                  <option selected disabled>Start Year</option>
+                  <option
+                    v-for="choice in dynamicYear"
+                    :key="choice"
+                    :value="choice"
+                    >{{ choice }}</option
+                  >
+                </select>
+              </div>
+            </div>
+            <div class="grid-item-starttime">
+              <h2 style="text-align: left; ">Start Time</h2>
+            </div>
+            <div class="grid-item-endmonth">
+              <div style="text-align: left" class="select">
+                <select name="slct" v-model="selectedEndMonth" id="slct">
+                  <option selected disabled>End Month</option>
+                  <option
+                    v-for="choice in dataNonDynamicMonth"
+                    :key="choice"
+                    :value="choice"
+                    >{{ choice }}</option
+                  >
+                </select>
+              </div>
+
+              <div style="text-align: left; padding-top: 10px" class="select">
+                <select name="slct" v-model="selectedEndYear" id="slct">
+                  <option selected disabled>Ennd Year</option>
+                  <option
+                    v-for="choice in dynamicYear"
+                    :key="choice"
+                    :value="choice"
+                    >{{ choice }}</option
+                  >
+                </select>
+              </div>
+            </div>
+            <div class="grid-item-endtime">
+              <h2 style="text-align: left padding-bottom: 10px;">End Time</h2>
+            </div>
+            <div class="ports-grid">
+              <h2 style="text-align: left">Ports</h2>
+              <div class="" :key="choice" v-for="choice in optionsForPorts">
+                <label class="checkbox-label">
+                  <input
+                    class=""
+                    type="checkbox"
+                    checked=""
+                    v-bind:id="choice"
+                    v-bind:value="choice"
+                    v-model="selectedOptionsForPorts"
+                  />
+
+                  {{ choice }}</label
+                ><br />
+              </div>
+            </div>
+            <div class="measures-grid">
+              <h2 style="text-align: left">Measure</h2>
+              <div class="" :key="choice" v-for="choice in optionsForMeasure">
+                <label class="checkbox-label">
+                  <input
+                    class=""
+                    type="checkbox"
+                    checked=""
+                    v-bind:id="choice"
+                    v-bind:value="choice"
+                    v-model="selectedOptionsForMeasure"
+                  />
+
+                  {{ choice }}</label
+                ><br />
+              </div>
+            </div>
+            <div class="selected-area-grid">
+              <h2>Area</h2>
+              <div class="" :key="choice" v-for="choice in optionsForArea">
+                <label class="checkbox-label">
+                  <input
+                    class=""
+                    type="radio"
+                    checked=""
+                    v-bind:id="choice"
+                    v-bind:value="choice"
+                    v-model="selectedArea"
+                  />
+
+                  {{ choice }}</label
+                ><br />
+              </div>
+            </div>
+          </div>
+        </b-modal>
+      </div>
+    </div>
+    <!-- Another container -->
+    <div class="w3-display-middle">
+      <h1 class="w3-jumbo w3-animate-top w3-center" style="color: black">
+        {{ totalNumber }}
+      </h1>
+      <hr class="w3-border-grey" style="margin:auto;width:40%" />
+      <h1 style="color: brown; font-size: 1.5rem;" class=" w3-center">
+        A
+        <span style="color: black"> {{ percentChangeForDom }}%</span>
+        <span style="color: black"> {{ increaseOrDecrease }}</span>
+        from border crossings between
+        <span ref="app" style="color: black">{{ previousYearOrNot }}</span>
+      </h1>
+      <h5 class="w3-center " style="color: black; font-size: 0.7rem">Data from BTS</h5>
+    </div>
+  </div>
+</div>
