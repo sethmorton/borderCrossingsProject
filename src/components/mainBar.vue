@@ -15,7 +15,7 @@ borderCrossingsProject/src/components/mainBar.vue Seth Morton Commit For Deploy
           from
           <span style="color: black;">{{ StartMonthWord }}</span>
 
-          <span style="color: black;">{{ StartYear }} &nbsp;</span>
+          <span style="color: black;">{{ StartYear &nbsp;}}   </span>
           to
           <span style="color: black;">{{ EndMonthWord }}</span>
           <span style="color: black;">{{ EndYear }}:</span>
