@@ -1,8 +1,10 @@
-version: '2'
+version: '3'
 services:
   web:
-    command: sh -c "npm install && npm run build"
     build: .
+    image: bordercrossing
+    container_name: bordercrossing-web
+    restart: always
     ports:
-      - "8087:80"
+      - "8087:8081"
   
