@@ -212,7 +212,13 @@ export default {
       if(new Date(this.StartYear, this.StartMonth, 1) > new Date(this.EndYear, this.EndMonth, 1)){alert("INVALID DATE")}
 
       var StartYearForQuery = this.StartYear - 1;
-      if (this.CaliData){var CheckCali = "&state=CA"}else{var CheckCali = ''}
+      if (this.CaliData){
+      var CheckCali = "&state=CA";
+      }
+      else
+      {
+      var CheckCali = "";
+      }
       axios
         .get(
           "https://data.transportation.gov/resource/keg4-3bc2.json?$limit=100000&$where=date between '" +
