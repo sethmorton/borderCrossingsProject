@@ -1,44 +1,32 @@
-Skip to content
-Search or jump to…
-
-Pull requests
-Issues
-Marketplace
-Explore
-
-@smphotography
-smphotography
-/
-borderCrossingsProject
-0
-00
- Code Issues 0 Pull requests 0 Actions Projects 0 Wiki Security Insights Settings
-borderCrossingsProject/src/components/mainBar.vue
- Seth Morton Commit For Deploy - Integration of Moment.js
-9f337a6 7 days ago
-894 lines (838 sloc)  27.2 KB
+Skip to content Search or jump to… Pull requests Issues Marketplace Explore
+@smphotography smphotography / borderCrossingsProject 0 00 Code Issues 0 Pull
+requests 0 Actions Projects 0 Wiki Security Insights Settings
+borderCrossingsProject/src/components/mainBar.vue Seth Morton Commit For Deploy
+- Integration of Moment.js 9f337a6 7 days ago 894 lines (838 sloc) 27.2 KB
 
 <template>
   <div class="expand">
     <!-- Set background size and image -->
-    <div class="bgimg w3-display-container w3-animate-opacity ">
+    <div class="bgimg w3-display-container w3-animate-opacity">
       <div class="centerTop">
-        <h1 class="w3-xxlarge w3-animate-top" style="color: brown ">
+        <h1 class="w3-xxlarge w3-animate-top" style="color: brown;">
           Total border crossings in
-          <span style="color: black">{{ SelectedArea }}</span> from
-          <span style="color: black">{{ StartMonthWord }} </span>
+          <span style="color: black;">{{ SelectedArea }}</span>
+          from
+          <span style="color: black;">{{ StartMonthWord }}</span>
 
-          <span style="color: black">{{ StartYear }}</span> to
-          <span style="color: black">{{ EndMonthWord }} </span>
-          <span style="color: black">{{ EndYear }}:</span>
+          <span style="color: black;">{{ StartYear }} &nbsp;</span>
+          to
+          <span style="color: black;">{{ EndMonthWord }}</span>
+          <span style="color: black;">{{ EndYear }}:</span>
         </h1>
       </div>
       <div class="leftBottom">
         <div>
           <!-- Stylized button for modal -->
-          <b-button class="btn fourth" v-b-modal.modal-scrollable
-            >Options</b-button
-          >
+          <b-button class="btn fourth" v-b-modal.modal-scrollable>
+            Options
+          </b-button>
           <!-- Modal and Modal title -->
           <b-modal
             id="modal-scrollable"
@@ -48,57 +36,51 @@ borderCrossingsProject/src/components/mainBar.vue
             description="query options"
           >
             <!-- Start of Query Options -->
-            <div class="w3-display-container grid-container ">
+            <div class="w3-display-container grid-container">
               <div class="grid-item-startmonth">
-                <div style="text-align: left" class="select">
+                <div style="text-align: left;" class="select">
                   <select name="slct" v-model="StartMonth" id="slct">
                     <option selected disabled>Start Month</option>
-                    <option
-                      v-for="x in NonDynMonth"
-                      :key="x"
-                      :value="x"
-                      >{{ x }}</option
-                    >
+                    <option v-for="x in NonDynMonth" :key="x" :value="x">
+                      {{ x }}
+                    </option>
                   </select>
                 </div>
 
-                <div style="text-align: left; padding-top: 10px" class="select">
+                <div
+                  style="text-align: left; padding-top: 10px;"
+                  class="select"
+                >
                   <select name="slct" v-model="StartYear" id="slct">
                     <option selected disabled>Start Year</option>
-                    <option
-                      v-for="x in DynYear"
-                      :key="x"
-                      :value="x"
-                      >{{ x }}</option
-                    >
+                    <option v-for="x in DynYear" :key="x" :value="x">
+                      {{ x }}
+                    </option>
                   </select>
                 </div>
               </div>
               <div class="grid-item-starttime">
-                <h2 style="text-align: left; ">Start Time</h2>
+                <h2 style="text-align: left;">Start Time</h2>
               </div>
               <div class="grid-item-endmonth">
-                <div style="text-align: left" class="select">
+                <div style="text-align: left;" class="select">
                   <select name="slct" v-model="EndMonth" id="slct">
                     <option selected disabled>End Month</option>
-                    <option
-                      v-for="x in NonDynMonth"
-                      :key="x"
-                      :value="x"
-                      >{{ x }}</option
-                    >
+                    <option v-for="x in NonDynMonth" :key="x" :value="x">
+                      {{ x }}
+                    </option>
                   </select>
                 </div>
 
-                <div style="text-align: left; padding-top: 10px" class="select">
+                <div
+                  style="text-align: left; padding-top: 10px;"
+                  class="select"
+                >
                   <select name="slct" v-model="EndYear" id="slct">
                     <option selected disabled>End Year</option>
-                    <option
-                      v-for="x in DynYear"
-                      :key="x"
-                      :value="x"
-                      >{{ x }}</option
-                    >
+                    <option v-for="x in DynYear" :key="x" :value="x">
+                      {{ x }}
+                    </option>
                   </select>
                 </div>
               </div>
@@ -106,7 +88,7 @@ borderCrossingsProject/src/components/mainBar.vue
                 <h2 style="text-align: left padding-bottom: 10px;">End Time</h2>
               </div>
               <div class="ports-grid">
-                <h2 style="text-align: left">Ports</h2>
+                <h2 style="text-align: left;">Ports</h2>
                 <div class="" :key="x" v-for="x in OptionsPorts">
                   <label class="checkbox-label">
                     <input
@@ -118,12 +100,13 @@ borderCrossingsProject/src/components/mainBar.vue
                       v-model="SelecPorts"
                     />
 
-                    {{ x }}</label
-                  ><br />
+                    {{ x }}
+                  </label>
+                  <br />
                 </div>
               </div>
               <div class="measures-grid">
-                <h2 style="text-align: left">Measure</h2>
+                <h2 style="text-align: left;">Measure</h2>
                 <div class="" :key="x" v-for="x in OptionsMeasure">
                   <label class="checkbox-label">
                     <input
@@ -135,8 +118,9 @@ borderCrossingsProject/src/components/mainBar.vue
                       v-model="SelecMeasures"
                     />
 
-                    {{ x }}</label
-                  ><br />
+                    {{ x }}
+                  </label>
+                  <br />
                 </div>
               </div>
               <div class="selected-area-grid">
@@ -152,8 +136,9 @@ borderCrossingsProject/src/components/mainBar.vue
                       v-model="SelectedArea"
                     />
 
-                    {{ x }}</label
-                  ><br />
+                    {{ x }}
+                  </label>
+                  <br />
                 </div>
               </div>
             </div>
@@ -162,18 +147,30 @@ borderCrossingsProject/src/components/mainBar.vue
       </div>
       <!-- Another container -->
       <div class="w3-display-middle">
-        <h1 class="w3-jumbo w3-animate-top w3-center" style="color: black">
+        <h1 class="w3-jumbo w3-animate-top w3-center" style="color: black;">
           {{ Sum }}
         </h1>
-        <hr class="w3-border-grey" style="margin:auto;width:40%" />
-        <h1 style="color: brown; font-size: 1.5rem;" class=" w3-center">
+        <hr class="w3-border-grey" style="margin: auto; width: 40%;" />
+        <h1 style="color: brown; font-size: 1.5rem;" class="w3-center">
           A
-          <span style="color: black"> {{ PercDiff }}%</span>
-          <span style="color: black"> {{ InOrDe }}</span>
+          <span style="color: black;">{{ PercDiff }}%</span>
+          <span style="color: black;">{{ InOrDe }}</span>
           from border crossings between
-          <span ref="app" style="color: black">{{ StartMonthWord + " " + (StartYear -1) + " to " + EndMonthWord + " " + (EndYear -1)  }}</span>
+          <span ref="app" style="color: black;">
+            {{
+              StartMonthWord +
+              ' ' +
+              (StartYear - 1) +
+              ' to ' +
+              EndMonthWord +
+              ' ' +
+              (EndYear - 1)
+            }}
+          </span>
         </h1>
-        <h5 class="w3-center " style="color: black; font-size: 0.7rem">Data from BTS</h5>
+        <h5 class="w3-center" style="color: black; font-size: 0.7rem;">
+          Data from BTS
+        </h5>
       </div>
     </div>
   </div>
@@ -181,135 +178,187 @@ borderCrossingsProject/src/components/mainBar.vue
 
 <script>
 // import axios
-import axios from "axios";
-import moment from "moment";
+import axios from 'axios'
+import moment from 'moment'
 export default {
   data: function () {
     return {
-      EndYear : "",
-      EndMonth : "",
-      StartYear : "",
-      StartMonth : "",
-      SelecPorts : [],
-      SelecMeasures : [],
-      OptionsPorts : [],
-      OptionsMeasure : [],
-      CaliData : true,
-      SelectedArea : "California",
-      OptionsArea : ["California", "Entire US-Mexico Border"],
-      DynYear : [],
-      NonDynMonth : ["1","2","3","4","5","6","7","8","9","10","11","12"],
-      Sum : "",
-      PercDiff : "",
-      InOrDe : "",
-      hasBeenTouched : false,
-      StartMonthWord : "",
-      EndMonthWord : "",
+      EndYear: '',
+      EndMonth: '',
+      StartYear: '',
+      StartMonth: '',
+      SelecPorts: [],
+      SelecMeasures: [],
+      OptionsPorts: [],
+      OptionsMeasure: [],
+      CaliData: true,
+      SelectedArea: 'California',
+      OptionsArea: ['California', 'Entire US-Mexico Border'],
+      DynYear: [],
+      NonDynMonth: [
+        '1',
+        '2',
+        '3',
+        '4',
+        '5',
+        '6',
+        '7',
+        '8',
+        '9',
+        '10',
+        '11',
+        '12',
+      ],
+      Sum: '',
+      PercDiff: '',
+      InOrDe: '',
+      hasBeenTouched: false,
+      StartMonthWord: '',
+      EndMonthWord: '',
+      CheckCali: '',
     }
   },
   methods: {
     returnTimeQueriedData: function () {
-      if(new Date(this.StartYear, this.StartMonth, 1) > new Date(this.EndYear, this.EndMonth, 1)){alert("INVALID DATE")}
-
-      var StartYearForQuery = this.StartYear - 1;
-      if (this.CaliData){
-      var CheckCali = "&state=CA";
+      if (
+        new Date(this.StartYear, this.StartMonth, 1) >
+        new Date(this.EndYear, this.EndMonth, 1)
+      ) {
+        alert('INVALID DATE')
       }
-      else
-      {
-      var CheckCali = "";
+
+      var StartYearForQuery = this.StartYear - 1
+      if (this.CaliData) {
+        this.CheckCali = '&state=CA'
+      } else {
+        this.CheckCali = ''
       }
       axios
         .get(
           "https://data.transportation.gov/resource/keg4-3bc2.json?$limit=100000&$where=date between '" +
             StartYearForQuery +
-            "-" +
-            this.StartMonth  +
+            '-' +
+            this.StartMonth +
             "-01' and '" +
             this.EndYear +
-            "-" +
+            '-' +
             this.StartMonth +
             "-01'&border=US-Mexico Border" +
-            CheckCali
+            this.CheckCali,
         )
-        .then(response => {
+        .then((response) => {
           var Data = response.data
-          var Ports = Data.map(x => x.port_name)
-          var UniquePorts = [... new Set(Ports)]
-          var Measure = Data.map(x => x.measure)
-          var UniqueMeasure = [... new Set(Measure)]
+          var Ports = Data.map((x) => x.port_name)
+          var UniquePorts = [...new Set(Ports)]
+          var Measure = Data.map((x) => x.measure)
+          var UniqueMeasure = [...new Set(Measure)]
           this.OptionsPorts = UniquePorts
           this.OptionsMeasure = UniqueMeasure
           this.getSum(Data)
         })
     },
     getSum: function (Data) {
-
       var SelecMeasures = this.SelecMeasures
       var SelecPorts = this.SelecPorts
       var PipePort = Data.filter((x) => SelecPorts.includes(x.port_name))
-      var PipeMeasure = PipePort.filter((x) => SelecMeasures.includes(x.measure))
-      var StringCreationEndDate = this.EndYear + "-" + ('0' + this.EndMonth).slice(-2) + "-01T00:00:00.000"
-      var StringCreationStartDate = this.StartYear + "-" + ('0' + this.StartMonth).slice(-2) + "-01T00:00:00.000"
-      var StringCreationEndDateMinusOne = (this.EndYear - 1) + "-" + ('0' + this.EndMonth).slice(-2) + "-01T00:00:00.000"
-      var StringCreationStartDateMinusOne = (this.StartYear - 1) + "-" + ('0' + this.StartMonth).slice(-2) + "-01T00:00:00.000"
+      var PipeMeasure = PipePort.filter((x) =>
+        SelecMeasures.includes(x.measure),
+      )
+      var StringCreationEndDate =
+        this.EndYear +
+        '-' +
+        ('0' + this.EndMonth).slice(-2) +
+        '-01T00:00:00.000'
+      var StringCreationStartDate =
+        this.StartYear +
+        '-' +
+        ('0' + this.StartMonth).slice(-2) +
+        '-01T00:00:00.000'
+      var StringCreationEndDateMinusOne =
+        this.EndYear -
+        1 +
+        '-' +
+        ('0' + this.EndMonth).slice(-2) +
+        '-01T00:00:00.000'
+      var StringCreationStartDateMinusOne =
+        this.StartYear -
+        1 +
+        '-' +
+        ('0' + this.StartMonth).slice(-2) +
+        '-01T00:00:00.000'
 
-      var FullPipedData = PipeMeasure.filter((x) => x.date >= StringCreationStartDate && x.date <= StringCreationEndDate)
-      var FullPipedDataSubtracted = PipeMeasure.filter((x) => x.date >= StringCreationStartDateMinusOne && x.date <= StringCreationEndDateMinusOne)
+      var FullPipedData = PipeMeasure.filter(
+        (x) =>
+          x.date >= StringCreationStartDate && x.date <= StringCreationEndDate,
+      )
+      var FullPipedDataSubtracted = PipeMeasure.filter(
+        (x) =>
+          x.date >= StringCreationStartDateMinusOne &&
+          x.date <= StringCreationEndDateMinusOne,
+      )
       var DataVal = []
       for (let i = 0; i < FullPipedData.length; i++) {
         DataVal.push(FullPipedData[i].value)
       }
-      var Sum = DataVal.map(Number).reduce((a,b) => a + b)
+      var Sum = DataVal.map(Number).reduce((a, b) => a + b)
       var SubtractedDataVal = []
       for (let i = 0; i < FullPipedDataSubtracted.length; i++) {
         SubtractedDataVal.push(FullPipedDataSubtracted[i].value)
       }
-      var SumForPercent = SubtractedDataVal.map(Number).reduce((a,b) => a + b)
-      var PercDiff = Math.ceil((((Sum - SumForPercent) /  Sum) * 100) * 100) / 100
-      var InOrDe = (Sum > SumForPercent) ? "increase" : "decrease";
+      var SumForPercent = SubtractedDataVal.map(Number).reduce((a, b) => a + b)
+      var PercDiff = Math.ceil(((Sum - SumForPercent) / Sum) * 100 * 100) / 100
+      var InOrDe = Sum > SumForPercent ? 'increase' : 'decrease'
       this.Sum = Sum
       this.PercDiff = PercDiff
       this.InOrDe = InOrDe
-      var StartMonth = (this.StartMonth -1)
-      var EndMonth = (this.EndMonth -1)
-      this.EndMonthWord = moment().month(+EndMonth).format("MMMM");
-      this.StartMonthWord = moment().month(+StartMonth).format("MMMM");
-
-
-    }
+      var StartMonth = this.StartMonth - 1
+      var EndMonth = this.EndMonth - 1
+      this.EndMonthWord = moment()
+        .month(+EndMonth)
+        .format('MMMM')
+      this.StartMonthWord = moment()
+        .month(+StartMonth)
+        .format('MMMM')
+    },
   },
   mounted: function () {
-    axios.get("https://data.bts.gov/id/keg4-3bc2.json?border=US-Mexico%20Border").then(DataBackForMax => {
-      var IniData = DataBackForMax.data
-      var FilterMaxDate = new Date(Math.max.apply(null, IniData.map((x) =>  new Date(x.date))));
-      var EndYear = moment(Date.parse(FilterMaxDate)).year()
-      var EndMonth = moment(Date.parse(FilterMaxDate)).month() + 1
-      var StartYear = EndYear - 1
-      var StartMonth = EndMonth
-      this.EndYear = EndYear
-      this.EndMonth = EndMonth
-      this.StartYear = StartYear
-      this.StartMonth = StartMonth
-      var Ports = IniData.map(x => x.port_name)
-      var UniquePorts = [... new Set(Ports)]
-      var Measure = IniData.map(x => x.measure)
-      var UniqueMeasure = [... new Set(Measure)]
-      var YearsArray = []
-      for (let i = EndYear; i > 1996; i--) {
-        YearsArray.push(i)
-      }
-      this.OptionsPorts = UniquePorts
-      this.OptionsMeasure = UniqueMeasure
-      this.SelecPorts = UniquePorts
-      this.SelecMeasures = UniqueMeasure
-      this.DynYear = YearsArray
-      this.returnTimeQueriedData()
-    })
+    axios
+      .get('https://data.bts.gov/id/keg4-3bc2.json?border=US-Mexico%20Border')
+      .then((DataBackForMax) => {
+        var IniData = DataBackForMax.data
+        var FilterMaxDate = new Date(
+          Math.max.apply(
+            null,
+            IniData.map((x) => new Date(x.date)),
+          ),
+        )
+        var EndYear = moment(Date.parse(FilterMaxDate)).year()
+        var EndMonth = moment(Date.parse(FilterMaxDate)).month() + 1
+        var StartYear = EndYear - 1
+        var StartMonth = EndMonth
+        this.EndYear = EndYear
+        this.EndMonth = EndMonth
+        this.StartYear = StartYear
+        this.StartMonth = StartMonth
+        var Ports = IniData.map((x) => x.port_name)
+        var UniquePorts = [...new Set(Ports)]
+        var Measure = IniData.map((x) => x.measure)
+        var UniqueMeasure = [...new Set(Measure)]
+        var YearsArray = []
+        for (let i = EndYear; i > 1996; i--) {
+          YearsArray.push(i)
+        }
+        this.OptionsPorts = UniquePorts
+        this.OptionsMeasure = UniqueMeasure
+        this.SelecPorts = UniquePorts
+        this.SelecMeasures = UniqueMeasure
+        this.DynYear = YearsArray
+        this.returnTimeQueriedData()
+      })
   },
   watch: {
     SelecPorts: function () {
-      if(this.SelecPorts.length != this.OptionsPorts.length){
+      if (this.SelecPorts.length != this.OptionsPorts.length) {
         this.hasBeenTouched = true
       }
       if (this.hasBeenTouched) {
@@ -317,7 +366,7 @@ export default {
       }
     },
     SelecMeasures: function () {
-      if(this.SelecMeasures.length != this.OptionsMeasure.length){
+      if (this.SelecMeasures.length != this.OptionsMeasure.length) {
         this.hasBeenTouched = true
       }
       if (this.hasBeenTouched) {
@@ -325,31 +374,23 @@ export default {
       }
     },
     SelectedArea: function () {
-        this.CaliData = !this.CaliData
-        this.returnTimeQueriedData()
+      this.CaliData = !this.CaliData
+      this.returnTimeQueriedData()
     },
     StartYear: function () {
-
-        this.returnTimeQueriedData()
-
+      this.returnTimeQueriedData()
     },
     StartMonth: function () {
-
-        this.returnTimeQueriedData()
-
+      this.returnTimeQueriedData()
     },
     EndYear: function () {
-
-        this.returnTimeQueriedData()
-
+      this.returnTimeQueriedData()
     },
     EndMonth: function () {
-
-        this.returnTimeQueriedData()
-
-    }
-  }
-};
+      this.returnTimeQueriedData()
+    },
+  },
+}
 </script>
 <style scoped>
 h3 {
@@ -367,8 +408,9 @@ h2 {
   white-space: nowrap;
 }
 body,
-h1,h5 {
-  font-family: "Raleway", sans-serif;
+h1,
+h5 {
+  font-family: 'Raleway', sans-serif;
   color: gray;
 }
 body,
@@ -376,13 +418,13 @@ html {
   height: 100%;
 }
 .bgimg {
-  background-image: url("../assets/tijuanariver.jpg");
+  background-image: url('../assets/tijuanariver.jpg');
   min-height: 100%;
   background-position: center;
   background-size: cover;
 }
 .bgimg1 {
-  background-image: url("https://image.freepik.com/foto-gratis/textura-viejo-fondo-papel-anaranjado-primer-estructura-carton-denso_113767-2088.jpg");
+  background-image: url('https://image.freepik.com/foto-gratis/textura-viejo-fondo-papel-anaranjado-primer-estructura-carton-denso_113767-2088.jpg');
   min-height: 100%;
   background-position: center;
   background-size: cover;
@@ -436,7 +478,7 @@ html {
   text-decoration: none;
   text-align: center;
   text-transform: uppercase;
-  font-family: "Montserrat", sans-serif;
+  font-family: 'Montserrat', sans-serif;
   font-weight: 700;
 }
 .btn:hover,
@@ -522,7 +564,7 @@ html {
   grid-column-start: 2;
   grid-column-end: 3;
 }
-label.checkbox-label input[type="checkbox"] {
+label.checkbox-label input[type='checkbox'] {
   position: relative;
   vertical-align: middle;
   bottom: 1px;
@@ -540,15 +582,5 @@ label {
   padding-bottom: 30px;
 }
 </style>
-© 2020 GitHub, Inc.
-Terms
-Privacy
-Security
-Status
-Help
-Contact GitHub
-Pricing
-API
-Training
-Blog
-About
+© 2020 GitHub, Inc. Terms Privacy Security Status Help Contact GitHub Pricing
+API Training Blog About
