@@ -13,11 +13,11 @@ borderCrossingsProject/src/components/mainBar.vue Seth Morton Commit For Deploy
           Total border crossings in
           <span style="color: black;">{{ SelectedArea }}</span>
           from
-          <span style="color: black;">{{ StartMonthWord }}</span>
+          <span style="color: black;">{{ StartMonthWord }}{{ '\xa0' }}</span>
 
-          <span style="color: black;">{{ StartYear &nbsp;}}   </span>
+          <span style="color: black;">{{ StartYear }}</span>
           to
-          <span style="color: black;">{{ EndMonthWord }}</span>
+          <span style="color: black;">{{ EndMonthWord }}{{ '\xa0' }}</span>
           <span style="color: black;">{{ EndYear }}:</span>
         </h1>
       </div>
