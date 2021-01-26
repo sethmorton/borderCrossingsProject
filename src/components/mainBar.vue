@@ -226,29 +226,23 @@ export default {
       ) {
         alert('INVALID DATE')
       }
-
-      var StartYearForQuery = this.StartYear - 1
+            var StartYearForQuery = this.StartYear - 1
       if (this.CaliData) {
-        this.CheckCali = '&state=CA'
+        this.CheckCali = '&state=California'
       } else {
         this.CheckCali = ''
       }
+    const str =  `
+    https://data.transportation.gov/resource/keg4-3bc2.json?$limit=100000&$where=date between '${StartYearForQuery}-${this.StartMonth}-01T00:00:00.000' and '${this.EndYear}-${this.EndMonth}-01T00:00:00.000'&border=US-Mexico Border${this.CheckCali}
+    `
+    console.log(str)
       axios
-        .get(
-          "https://data.transportation.gov/resource/keg4-3bc2.json?$limit=100000&$where=date between '" +
-            StartYearForQuery +
-            '-' +
-            this.StartMonth +
-            "-01' and '" +
-            this.EndYear +
-            '-' +
-            this.StartMonth +
-            "-01'&border=US-Mexico Border" +
-            this.CheckCali,
-        )
+        .get(str)
         .then((response) => {
-          var Data = response.data
-          var Ports = Data.map((x) => x.port_name)
+          var Data = response.data;
+          console.log(Data)
+          var Ports = Data.map((x) => x.port_name);
+          console.log(Ports)
           var UniquePorts = [...new Set(Ports)]
           var Measure = Data.map((x) => x.measure)
           var UniqueMeasure = [...new Set(Measure)]
@@ -258,22 +252,27 @@ export default {
         })
     },
     getSum: function (Data) {
+      console.log(Data)
       var SelecMeasures = this.SelecMeasures
       var SelecPorts = this.SelecPorts
-      var PipePort = Data.filter((x) => SelecPorts.includes(x.port_name))
+      var PipePort = Data.filter((x) => SelecPorts.includes(x.port_name));
+      console.log(PipePort)
       var PipeMeasure = PipePort.filter((x) =>
         SelecMeasures.includes(x.measure),
-      )
+      );
+      console.log(PipeMeasure)
       var StringCreationEndDate =
         this.EndYear +
         '-' +
         ('0' + this.EndMonth).slice(-2) +
-        '-01T00:00:00.000'
+        '-01T00:00:00.000';
+        console.log(StringCreationEndDate)
       var StringCreationStartDate =
         this.StartYear +
         '-' +
         ('0' + this.StartMonth).slice(-2) +
         '-01T00:00:00.000'
+        console.log(StringCreationStartDate)
       var StringCreationEndDateMinusOne =
         this.EndYear -
         1 +
@@ -288,9 +287,13 @@ export default {
         '-01T00:00:00.000'
 
       var FullPipedData = PipeMeasure.filter(
-        (x) =>
-          x.date >= StringCreationStartDate && x.date <= StringCreationEndDate,
-      )
+        (x) => {
+          console.log(x.date);
+
+          return x.date >= StringCreationStartDate && x.date <= StringCreationEndDate
+        }
+      );
+      console.log(FullPipedData)
       var FullPipedDataSubtracted = PipeMeasure.filter(
         (x) =>
           x.date >= StringCreationStartDateMinusOne &&
@@ -324,14 +327,15 @@ export default {
   mounted: function () {
     axios
       .get('https://data.bts.gov/id/keg4-3bc2.json?border=US-Mexico%20Border')
-      .then((DataBackForMax) => {
-        var IniData = DataBackForMax.data
-        var FilterMaxDate = new Date(
+      .then((res) => {
+        const IniData = res.data
+        const FilterMaxDate = new Date(
           Math.max.apply(
             null,
             IniData.map((x) => new Date(x.date)),
           ),
         )
+        console.log(FilterMaxDate)
         var EndYear = moment(Date.parse(FilterMaxDate)).year()
         var EndMonth = moment(Date.parse(FilterMaxDate)).month() + 1
         var StartYear = EndYear - 1
@@ -340,7 +344,8 @@ export default {
         this.EndMonth = EndMonth
         this.StartYear = StartYear
         this.StartMonth = StartMonth
-        var Ports = IniData.map((x) => x.port_name)
+        var Ports = IniData.map((x) => x.port_name);
+        console.log(Ports)
         var UniquePorts = [...new Set(Ports)]
         var Measure = IniData.map((x) => x.measure)
         var UniqueMeasure = [...new Set(Measure)]
